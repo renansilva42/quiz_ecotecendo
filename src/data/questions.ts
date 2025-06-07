@@ -65,6 +65,15 @@ export const questions: Question[] = [
     timeLimit: 30,
     explanation: "As árvores são fundamentais pois produzem oxigênio, absorvem CO2 e ajudam a purificar o ar."
   },
+  {
+    id: 26,
+    question: "Qual é a principal vantagem da energia solar fotovoltaica?",
+    options: ["É renovável e limpa", "É cara e poluente", "Depende de combustíveis fósseis", "Produz resíduos tóxicos"],
+    correctAnswer: 0,
+    difficulty: 'easy',
+    timeLimit: 30,
+    explanation: "A energia solar fotovoltaica é uma fonte renovável e limpa que converte a luz do sol em eletricidade."
+  },
 
   // Medium questions (8-14)
   {
@@ -236,9 +245,9 @@ export const questions: Question[] = [
 ];
 
 export const getRandomQuestions = (): Question[] => {
-  // Select 10 easy, 5 medium, 5 hard questions in order
-  const easyQuestions = questions.filter(q => q.difficulty === 'easy').slice(0, 10);
-  const mediumQuestions = questions.filter(q => q.difficulty === 'medium').slice(0, 5);
-  const hardQuestions = questions.filter(q => q.difficulty === 'hard').slice(0, 5);
+  // Select up to 10 easy, 5 medium, 5 hard questions in order
+  const easyQuestions = questions.filter(q => q.difficulty === 'easy').slice(0, Math.min(10, questions.filter(q => q.difficulty === 'easy').length));
+  const mediumQuestions = questions.filter(q => q.difficulty === 'medium').slice(0, Math.min(5, questions.filter(q => q.difficulty === 'medium').length));
+  const hardQuestions = questions.filter(q => q.difficulty === 'hard').slice(0, Math.min(5, questions.filter(q => q.difficulty === 'hard').length));
   return [...easyQuestions, ...mediumQuestions, ...hardQuestions];
 };

@@ -191,9 +191,9 @@ export const Ranking: React.FC<RankingProps> = ({ onPlayAgain, onBackToWelcome }
                           <div className="flex items-center space-x-2">
                             <h4 className="font-bold text-gray-800">{entry.user_name}</h4>
                           </div>
-                          <p className={`text-sm ${isWinner ? 'text-yellow-600' : 'text-gray-600'}`}>
-                            {position}º • @{entry.user_instagram}
-                          </p>
+                  <p className={`text-sm ${position <= 5 ? 'text-yellow-600' : 'text-gray-600'}`}>
+                    {position}º • @{entry.user_instagram}
+                  </p>
                         </div>
                       </div>
 

@@ -16,8 +16,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onViewRan
             <img
               src={logo}
               alt="Logo"
-              className="w-24 h-24 object-contain"
-              style={{ maxWidth: '150px', maxHeight: '150px' }}
+              className="w-32 h-32 object-contain"
+              style={{ maxWidth: '200px', maxHeight: '200px' }}
             />
           </div>
           

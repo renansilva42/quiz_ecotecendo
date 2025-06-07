@@ -74,8 +74,8 @@ export const UserRegistration: React.FC<UserRegistrationProps> = ({ onUserRegist
             <img
               src={logo}
               alt="Logo"
-              className="w-24 h-24 object-contain mx-auto mb-4"
-              style={{ maxWidth: '150px', maxHeight: '150px' }}
+              className="w-36 h-36 object-contain mx-auto mb-4"
+              style={{ maxWidth: '200px', maxHeight: '200px' }}
             />
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Cadastro Rápido</h2>
             <p className="text-gray-600">Preencha seus dados para começar o quiz</p>

@@ -56,8 +56,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister
             <img
               src={logo}
               alt="Logo"
-              className="w-24 h-24 object-contain mx-auto mb-4"
-              style={{ maxWidth: '150px', maxHeight: '150px' }}
+              className="w-32 h-32 object-contain mx-auto mb-4"
+              style={{ maxWidth: '200px', maxHeight: '200px' }}
             />
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Login</h2>
             <p className="text-gray-600">Entre para continuar jogando e melhorar sua pontuação</p>

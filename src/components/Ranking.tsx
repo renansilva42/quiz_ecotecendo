@@ -54,15 +54,8 @@ export const Ranking: React.FC<RankingProps> = ({ onPlayAgain, onBackToWelcome }
   };
 
   const getRankColor = (position: number) => {
-    if (position <= 5) {
-      switch (position) {
-        case 1: return 'bg-gradient-to-r from-yellow-100 to-yellow-200 border-yellow-300';
-        case 2: return 'bg-gradient-to-r from-gray-100 to-gray-200 border-gray-300';
-        case 3: return 'bg-gradient-to-r from-amber-100 to-amber-200 border-amber-300';
-        case 4:
-        case 5: return 'bg-gradient-to-r from-green-100 to-green-200 border-green-300';
-        default: return 'bg-white border-gray-200';
-      }
+    if (position >= 1 && position <= 5) {
+      return 'bg-gradient-to-r from-yellow-100 to-yellow-200 border-yellow-300';
     }
     return 'bg-white border-gray-200';
   };
@@ -191,7 +184,7 @@ export const Ranking: React.FC<RankingProps> = ({ onPlayAgain, onBackToWelcome }
                           <div className="flex items-center space-x-2">
                             <h4 className="font-bold text-gray-800">{entry.user_name}</h4>
                           </div>
-                  <p className={`text-sm ${position <= 5 ? 'text-yellow-600' : 'text-gray-600'}`}>
+                  <p className={`text-sm ${position >= 1 && position <= 5 ? 'text-yellow-600' : 'text-gray-600'}`}>
                     {position}º • @{entry.user_instagram}
                   </p>
                         </div>

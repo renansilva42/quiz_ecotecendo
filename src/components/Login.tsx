@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Key } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { User } from '../types';
+import logo from '../assets/logo.png';
 
 interface LoginProps {
   onLoginSuccess: (user: User) => void;
@@ -52,6 +53,12 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-24 h-24 object-contain mx-auto mb-4"
+              style={{ maxWidth: '150px', maxHeight: '150px' }}
+            />
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Login</h2>
             <p className="text-gray-600">Entre para continuar jogando e melhorar sua pontuação</p>
           </div>

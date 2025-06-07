@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { User2, Mail, Instagram, Key } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { User } from '../types';
+import logo from '../assets/logo.png';
 
 interface UserRegistrationProps {
   onUserRegistered: (user: User) => void;
@@ -70,9 +71,12 @@ export const UserRegistration: React.FC<UserRegistrationProps> = ({ onUserRegist
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <div className="bg-gradient-to-r from-green-500 to-blue-500 p-4 rounded-full w-16 h-16 mx-auto mb-4">
-              <User2 className="w-8 h-8 text-white" />
-            </div>
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-24 h-24 object-contain mx-auto mb-4"
+              style={{ maxWidth: '150px', maxHeight: '150px' }}
+            />
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Cadastro Rápido</h2>
             <p className="text-gray-600">Preencha seus dados para começar o quiz</p>
           </div>

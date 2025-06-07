@@ -1,5 +1,6 @@
 import React from 'react';
-import { Leaf, Trophy, Clock, Users } from 'lucide-react';
+import { Clock, Trophy, Users } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -12,9 +13,12 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onViewRan
       <div className="max-w-4xl w-full">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-6">
-            <div className="bg-gradient-to-r from-green-500 to-blue-500 p-6 rounded-full">
-              <Leaf className="w-16 h-16 text-white" />
-            </div>
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-24 h-24 object-contain"
+              style={{ maxWidth: '150px', maxHeight: '150px' }}
+            />
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-4">
@@ -93,4 +97,4 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onViewRan
       </div>
     </div>
   );
-};
+ };

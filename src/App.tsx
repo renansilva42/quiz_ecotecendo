@@ -9,15 +9,26 @@ import { WelcomeScreen } from './components/WelcomeScreen';
 import { ResultadosGincana } from './components/ResultadosGincana';
 
 export const App: React.FC = () => {
-  // Check if we're on the results page
-  if (window.location.pathname === '/resultados-gincana' || window.location.pathname === '/resultados-gincana.html') {
-    return <ResultadosGincana />;
-  }
   const [user, setUser] = useState<User | null>(null);
   const [showRegistration, setShowRegistration] = useState(false);
-  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking'>('login');
+  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking' | 'resultados'>('login');
+
+  // Check if we're on the results page
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === '/resultados-gincana' || path === '/resultados-gincana.html' || path.includes('resultados')) {
+      setView('resultados');
+      return;
+    }
+  }, []);
 
   useEffect(() => {
+    // Don't check auth if we're on results page
+    const path = window.location.pathname;
+    if (path === '/resultados-gincana' || path === '/resultados-gincana.html' || path.includes('resultados')) {
+      return;
+    }
+
     supabase.auth.getSession().then(({ data }) => {
       if (data.session && data.session.user) {
         const u = data.session.user;
@@ -140,6 +151,10 @@ export const App: React.FC = () => {
     return (
       <Ranking onPlayAgain={handlePlayAgain} onBackToWelcome={handleBackToWelcome} />
     );
+  }
+
+  if (view === 'resultados') {
+    return <ResultadosGincana />;
   }
 
   return null;

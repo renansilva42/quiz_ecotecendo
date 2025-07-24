@@ -8,6 +8,9 @@ interface WelcomeScreenProps {
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onViewRanking }) => {
+  const handleViewGincanaResults = () => {
+    window.location.href = '/resultados-gincana';
+  };
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-4xl w-full">
@@ -80,6 +83,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onViewRan
             className="bg-white text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
           >
             Ver Ranking
+          </button>
+
+          <button
+            onClick={handleViewGincanaResults}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-purple-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+          >
+            🏆 Resultados Gincana
           </button>
         </div>
 

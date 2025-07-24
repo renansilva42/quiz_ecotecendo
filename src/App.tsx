@@ -6,8 +6,13 @@ import { User } from './types';
 import { Login } from './components/Login';
 import { Ranking } from './components/Ranking';
 import { WelcomeScreen } from './components/WelcomeScreen';
+import { ResultadosGincana } from './components/ResultadosGincana';
 
 export const App: React.FC = () => {
+  // Check if we're on the results page
+  if (window.location.pathname === '/resultados-gincana' || window.location.pathname === '/resultados-gincana.html') {
+    return <ResultadosGincana />;
+  }
   const [user, setUser] = useState<User | null>(null);
   const [showRegistration, setShowRegistration] = useState(false);
   const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking'>('login');

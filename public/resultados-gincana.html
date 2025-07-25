@@ -447,7 +447,34 @@
         /* Responsive */
         @media (max-width: 768px) {
             .event-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                line-height: 1.2;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .event-title {
+                font-size: 1.8rem;
+                line-height: 1.3;
+                padding: 0 10px;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            .header {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .event-title {
+                font-size: 1.6rem;
+                line-height: 1.4;
             }
             
             .podium {

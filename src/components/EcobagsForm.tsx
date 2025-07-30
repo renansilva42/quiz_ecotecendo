@@ -551,7 +551,7 @@ export const EcobagsForm: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Durante o mês de julho de 2024, como você percebeu a situação da poluição nas praias de Mosqueiro? *
+                  Durante o mês de julho de 2025, como você percebeu a situação da poluição nas praias de Mosqueiro? *
                 </label>
                 <div className="space-y-2">
                   {[

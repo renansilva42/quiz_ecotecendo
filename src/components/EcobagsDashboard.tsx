@@ -64,7 +64,7 @@ const LABEL_MAPPINGS = {
   not_replaced: 'Não substituíram',
   significantly: 'Sim, significativamente',
   not_contributed: 'Não contribuiu',
-  very_polluted: 'Muito polu��da',
+  very_polluted: 'Muito poluída',
   polluted: 'Poluída',
   little_polluted: 'Pouco poluída',
   clean: 'Limpa',
@@ -78,7 +78,14 @@ const LABEL_MAPPINGS = {
   very_interested: 'Muito interesse',
   moderate_interest: 'Interesse moderado',
   little_interest: 'Pouco interesse',
-  no_interest: 'Sem interesse'
+  no_interest: 'Sem interesse',
+  // Relationship mappings
+  father: 'Pai',
+  mother: 'Mãe',
+  grandfather: 'Avô/Avó',
+  uncle: 'Tio/Tia',
+  legal_guardian: 'Responsável legal',
+  other: 'Outro'
 };
 
 export const EcobagsDashboard: React.FC = () => {
@@ -333,7 +340,7 @@ export const EcobagsDashboard: React.FC = () => {
               <div>
                 <p className="text-sm text-gray-600">Alunos</p>
                 <p className="text-2xl font-bold text-gray-800">
-                  {responses.filter(r => r.respondent_type === 'student').length}
+                  {filteredResponses.filter(r => r.respondent_type === 'student').length}
                 </p>
               </div>
             </div>
@@ -345,7 +352,7 @@ export const EcobagsDashboard: React.FC = () => {
               <div>
                 <p className="text-sm text-gray-600">Responsáveis</p>
                 <p className="text-2xl font-bold text-gray-800">
-                  {responses.filter(r => r.respondent_type === 'parent').length}
+                  {filteredResponses.filter(r => r.respondent_type === 'parent').length}
                 </p>
               </div>
             </div>
@@ -518,7 +525,7 @@ export const EcobagsDashboard: React.FC = () => {
                         <p><strong>Turma do Aluno:</strong> {selectedResponse.student_class_parent}</p>
                       )}
                       {selectedResponse.relationship && (
-                        <p><strong>Parentesco:</strong> {selectedResponse.relationship}</p>
+                        <p><strong>Parentesco:</strong> {LABEL_MAPPINGS[selectedResponse.relationship as keyof typeof LABEL_MAPPINGS] || selectedResponse.relationship}</p>
                       )}
                       {selectedResponse.student_name && (
                         <p><strong>Nome do Aluno:</strong> {selectedResponse.student_name}</p>
@@ -580,7 +587,7 @@ export const EcobagsDashboard: React.FC = () => {
                   <h4 className="font-semibold text-gray-700 mb-3 text-lg">Percepção sobre Poluição em Mosqueiro</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-red-50 p-3 rounded">
-                      <p><strong>Poluição em Julho 2024:</strong></p>
+                      <p><strong>Poluição em Julho 2025:</strong></p>
                       <p className="text-red-700">{LABEL_MAPPINGS[selectedResponse.july_pollution as keyof typeof LABEL_MAPPINGS] || selectedResponse.july_pollution}</p>
                     </div>
                     <div className="bg-red-50 p-3 rounded">

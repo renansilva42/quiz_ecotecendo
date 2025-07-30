@@ -9,11 +9,12 @@ import { WelcomeScreen } from './components/WelcomeScreen';
 import { ResultadosGincana } from './components/ResultadosGincana';
 import { EcobagsForm } from './components/EcobagsForm';
 import { EcobagsDashboard } from './components/EcobagsDashboard';
+import { DashboardTest } from './components/DashboardTest';
 
 export const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [showRegistration, setShowRegistration] = useState(false);
-  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking' | 'resultados' | 'ecobags' | 'dashboard'>('login');
+  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking' | 'resultados' | 'ecobags' | 'dashboard' | 'dashboard-test'>('login');
 
   // Check if we're on the results page or ecobags form
   useEffect(() => {
@@ -24,6 +25,10 @@ export const App: React.FC = () => {
     }
     if (path === '/ecobags' || path === '/ecobags.html' || path.includes('ecobags')) {
       setView('ecobags');
+      return;
+    }
+    if (path === '/dashboard-test' || path === '/dashboard-test.html' || path.includes('dashboard-test')) {
+      setView('dashboard-test');
       return;
     }
     if (path === '/dashboard' || path === '/dashboard.html' || path.includes('dashboard')) {
@@ -179,6 +184,10 @@ export const App: React.FC = () => {
 
   if (view === 'dashboard') {
     return <EcobagsDashboard />;
+  }
+
+  if (view === 'dashboard-test') {
+    return <DashboardTest />;
   }
 
   return null;

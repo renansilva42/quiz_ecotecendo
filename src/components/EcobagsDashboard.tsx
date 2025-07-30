@@ -85,6 +85,7 @@ export const EcobagsDashboard: React.FC = () => {
   const [responses, setResponses] = useState<EcobagsResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'student' | 'parent'>('all');
+  const [classFilter, setClassFilter] = useState<string>('all');
   const [selectedResponse, setSelectedResponse] = useState<EcobagsResponse | null>(null);
 
   useEffect(() => {
@@ -107,9 +108,28 @@ export const EcobagsDashboard: React.FC = () => {
     }
   };
 
-  const filteredResponses = responses.filter(response => 
-    filter === 'all' || response.respondent_type === filter
-  );
+  // Get unique classes from responses
+  const getAvailableClasses = () => {
+    const classes = new Set<string>();
+    responses.forEach(response => {
+      const studentClass = response.student_class || response.student_class_parent;
+      if (studentClass && studentClass.trim()) {
+        classes.add(studentClass.trim());
+      }
+    });
+    return Array.from(classes).sort();
+  };
+
+  const filteredResponses = responses.filter(response => {
+    // Filter by respondent type
+    const typeMatch = filter === 'all' || response.respondent_type === filter;
+    
+    // Filter by class
+    const responseClass = response.student_class || response.student_class_parent;
+    const classMatch = classFilter === 'all' || responseClass === classFilter;
+    
+    return typeMatch && classMatch;
+  });
 
   const getChartData = (field: keyof EcobagsResponse) => {
     const counts: { [key: string]: number } = {};
@@ -255,6 +275,21 @@ export const EcobagsDashboard: React.FC = () => {
                   <option value="all">Todos os respondentes</option>
                   <option value="student">Apenas alunos</option>
                   <option value="parent">Apenas responsáveis</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-gray-500" />
+                <select
+                  value={classFilter}
+                  onChange={(e) => setClassFilter(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                >
+                  <option value="all">Todas as turmas</option>
+                  {getAvailableClasses().map(className => (
+                    <option key={className} value={className}>
+                      {className}
+                    </option>
+                  ))}
                 </select>
               </div>
               <button
@@ -406,6 +441,7 @@ export const EcobagsDashboard: React.FC = () => {
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Data</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Tipo</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Nome</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Turma</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Nota</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Ações</th>
                 </tr>
@@ -426,6 +462,9 @@ export const EcobagsDashboard: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-4 py-2 text-sm text-gray-800">{response.name}</td>
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      {response.student_class || response.student_class_parent || '-'}
+                    </td>
                     <td className="px-4 py-2 text-sm">
                       <span className="flex items-center">
                         <Star className="w-4 h-4 text-yellow-500 mr-1" />

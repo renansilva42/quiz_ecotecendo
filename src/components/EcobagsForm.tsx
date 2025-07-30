@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { CheckCircle, Leaf, Users, MessageSquare, Star, Send } from 'lucide-react';
+import { CheckCircle, Leaf, Users, MessageSquare, Star, Send, Smartphone } from 'lucide-react';
 
 interface FormData {
   // Identificação
@@ -34,6 +34,10 @@ interface FormData {
   trash_types: string[];
   trash_types_other: string;
   project_impact_belief: string;
+  
+  // Ecogamificação
+  ecogamification_opinion: string;
+  technology_reception: string;
   
   // Depoimentos
   project_experience: string;
@@ -75,6 +79,8 @@ export const EcobagsForm: React.FC = () => {
     trash_types: [],
     trash_types_other: '',
     project_impact_belief: '',
+    ecogamification_opinion: '',
+    technology_reception: '',
     project_experience: '',
     pollution_observations: '',
     consciousness_changes: '',
@@ -85,7 +91,7 @@ export const EcobagsForm: React.FC = () => {
     future_participation: ''
   });
 
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   const handleInputChange = (field: keyof FormData, value: any) => {
     setFormData(prev => {
@@ -162,6 +168,8 @@ export const EcobagsForm: React.FC = () => {
           trash_types: formData.trash_types,
           trash_types_other: formData.trash_types_other,
           project_impact_belief: formData.project_impact_belief,
+          ecogamification_opinion: formData.ecogamification_opinion,
+          technology_reception: formData.technology_reception,
           project_experience: formData.project_experience,
           pollution_observations: formData.pollution_observations,
           consciousness_changes: formData.consciousness_changes,
@@ -211,6 +219,8 @@ export const EcobagsForm: React.FC = () => {
         return formData.july_pollution && formData.pollution_comparison && 
                formData.project_impact_belief;
       case 5:
+        return formData.ecogamification_opinion && formData.technology_reception;
+      case 6:
         return formData.project_rating > 0 && formData.project_continuation && 
                formData.future_participation;
       default:
@@ -692,8 +702,78 @@ export const EcobagsForm: React.FC = () => {
             </div>
           )}
 
-          {/* Step 5: Avaliação Geral */}
+          {/* Step 5: Ecogamificação */}
           {currentStep === 5 && (
+            <div className="space-y-6">
+              <div className="flex items-center mb-6">
+                <Smartphone className="w-6 h-6 text-green-600 mr-3" />
+                <h3 className="text-xl font-semibold text-gray-800">Projeto Ecogamificação</h3>
+              </div>
+
+              <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                <p className="text-sm text-blue-800">
+                  <strong>Sobre o Projeto Ecogamificação:</strong> É um projeto que utiliza QR codes espalhados pela escola 
+                  para criar uma "Caça ao Tesouro Sustentável", onde alunos escaneiam códigos com smartphones e completam 
+                  desafios ambientais interativos, combinando tecnologia com educação ambiental.
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  O que você acha dessa abordagem tecnológica (QR codes) para educação ambiental? *
+                </label>
+                <div className="space-y-2">
+                  {[
+                    { value: 'very_interesting', label: 'Muito interessante e engajante' },
+                    { value: 'interesting_traditional', label: 'Interessante, mas prefiro métodos tradicionais' },
+                    { value: 'little_interesting', label: 'Pouco interessante' },
+                    { value: 'no_benefits', label: 'Não vejo benefícios' }
+                  ].map((option) => (
+                    <label key={option.value} className="flex items-center">
+                      <input
+                        type="radio"
+                        name="ecogamification_opinion"
+                        value={option.value}
+                        checked={formData.ecogamification_opinion === option.value}
+                        onChange={(e) => handleInputChange('ecogamification_opinion', e.target.value)}
+                        className="mr-3 text-green-600"
+                      />
+                      {option.label}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Como você avalia a recepção de projetos que combinam tecnologia (como QR codes) com ações práticas de sustentabilidade no ambiente escolar? *
+                </label>
+                <div className="space-y-2">
+                  {[
+                    { value: 'very_well_received', label: 'Muito bem recebidos pelos alunos' },
+                    { value: 'well_received_resistance', label: 'Bem recebidos, mas com algumas resistências' },
+                    { value: 'mixed_reception', label: 'Recepção mista' },
+                    { value: 'little_interest', label: 'Pouco interesse dos alunos' }
+                  ].map((option) => (
+                    <label key={option.value} className="flex items-center">
+                      <input
+                        type="radio"
+                        name="technology_reception"
+                        value={option.value}
+                        checked={formData.technology_reception === option.value}
+                        onChange={(e) => handleInputChange('technology_reception', e.target.value)}
+                        className="mr-3 text-green-600"
+                      />
+                      {option.label}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 6: Avaliação Geral */}
+          {currentStep === 6 && (
             <div className="space-y-6">
               <div className="flex items-center mb-6">
                 <Star className="w-6 h-6 text-green-600 mr-3" />

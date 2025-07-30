@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Download, Users, Star, TrendingUp, MessageSquare, Filter } from 'lucide-react';
+import { Download, Users, Star, TrendingUp, MessageSquare, Filter, Smartphone } from 'lucide-react';
 
 interface EcobagsResponse {
   id: string;
@@ -25,6 +25,8 @@ interface EcobagsResponse {
   trash_types: string[];
   trash_types_other?: string;
   project_impact_belief: string;
+  ecogamification_opinion?: string;
+  technology_reception?: string;
   project_experience?: string;
   pollution_observations?: string;
   consciousness_changes?: string;
@@ -66,7 +68,7 @@ const LABEL_MAPPINGS = {
   not_contributed: 'Não contribuiu',
   very_polluted: 'Muito poluída',
   polluted: 'Poluída',
-  little_polluted: 'Pouco poluída',
+  little_polluted: 'Pouco polu��da',
   clean: 'Limpa',
   much_higher: 'Muito maior',
   higher: 'Maior',
@@ -85,7 +87,15 @@ const LABEL_MAPPINGS = {
   grandfather: 'Avô/Avó',
   uncle: 'Tio/Tia',
   legal_guardian: 'Responsável legal',
-  other: 'Outro'
+  other: 'Outro',
+  // Ecogamification mappings
+  very_interesting: 'Muito interessante e engajante',
+  interesting_traditional: 'Interessante, mas prefiro métodos tradicionais',
+  little_interesting: 'Pouco interessante',
+  no_benefits: 'Não vejo benefícios',
+  very_well_received: 'Muito bem recebidos pelos alunos',
+  well_received_resistance: 'Bem recebidos, mas com algumas resistências',
+  mixed_reception: 'Recepção mista'
 };
 
 export const EcobagsDashboard: React.FC = () => {
@@ -200,8 +210,9 @@ export const EcobagsDashboard: React.FC = () => {
       'Data', 'Tipo', 'Nome', 'Turma', 'Importância do Projeto', 'Engajamento dos Alunos',
       'Qualidade das Ecobags', 'Participação da Família', 'Uso das Ecobags', 'Substituição do Plástico',
       'Promoção do Projeto', 'Mudanças de Hábitos', 'Poluição em Julho', 'Comparação da Poluição',
-      'Crença no Impacto', 'Nota do Projeto', 'Continuação do Projeto', 'Participação Futura',
-      'Experiência', 'Observações sobre Poluição', 'Mudanças na Consciência', 'Sugestões', 'Depoimento'
+      'Crença no Impacto', 'Opinião Ecogamificação', 'Recepção Tecnologia', 'Nota do Projeto', 
+      'Continuação do Projeto', 'Participação Futura', 'Experiência', 'Observações sobre Poluição', 
+      'Mudanças na Consciência', 'Sugestões', 'Depoimento'
     ];
 
     const csvContent = [
@@ -222,6 +233,8 @@ export const EcobagsDashboard: React.FC = () => {
         LABEL_MAPPINGS[response.july_pollution as keyof typeof LABEL_MAPPINGS] || response.july_pollution,
         LABEL_MAPPINGS[response.pollution_comparison as keyof typeof LABEL_MAPPINGS] || response.pollution_comparison,
         LABEL_MAPPINGS[response.project_impact_belief as keyof typeof LABEL_MAPPINGS] || response.project_impact_belief,
+        response.ecogamification_opinion ? (LABEL_MAPPINGS[response.ecogamification_opinion as keyof typeof LABEL_MAPPINGS] || response.ecogamification_opinion) : '',
+        response.technology_reception ? (LABEL_MAPPINGS[response.technology_reception as keyof typeof LABEL_MAPPINGS] || response.technology_reception) : '',
         response.project_rating,
         LABEL_MAPPINGS[response.project_continuation as keyof typeof LABEL_MAPPINGS] || response.project_continuation,
         LABEL_MAPPINGS[response.future_participation as keyof typeof LABEL_MAPPINGS] || response.future_participation,
@@ -245,6 +258,9 @@ export const EcobagsDashboard: React.FC = () => {
   };
 
   const averageRating = filteredResponses.reduce((sum, response) => sum + (response.project_rating || 0), 0) / filteredResponses.length;
+
+  // Count responses with ecogamification data
+  const responsesWithEcogamification = filteredResponses.filter(r => r.ecogamification_opinion || r.technology_reception).length;
 
   if (loading) {
     return (
@@ -311,7 +327,7 @@ export const EcobagsDashboard: React.FC = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center">
               <Users className="w-8 h-8 text-blue-600 mr-3" />
@@ -353,6 +369,18 @@ export const EcobagsDashboard: React.FC = () => {
                 <p className="text-sm text-gray-600">Responsáveis</p>
                 <p className="text-2xl font-bold text-gray-800">
                   {filteredResponses.filter(r => r.respondent_type === 'parent').length}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex items-center">
+              <Smartphone className="w-8 h-8 text-indigo-600 mr-3" />
+              <div>
+                <p className="text-sm text-gray-600">Com Ecogamificação</p>
+                <p className="text-2xl font-bold text-gray-800">
+                  {responsesWithEcogamification}
                 </p>
               </div>
             </div>
@@ -434,6 +462,48 @@ export const EcobagsDashboard: React.FC = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
+
+          {/* Ecogamification Opinion */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Opinião sobre Ecogamificação
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={getChartData('ecogamification_opinion')}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {getChartData('ecogamification_opinion').map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Technology Reception */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Recepção da Tecnologia
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={getChartData('technology_reception')}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#6366f1" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Recent Responses */}
@@ -450,6 +520,7 @@ export const EcobagsDashboard: React.FC = () => {
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Nome</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Turma</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Nota</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Ecogamificação</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Ações</th>
                 </tr>
               </thead>
@@ -477,6 +548,17 @@ export const EcobagsDashboard: React.FC = () => {
                         <Star className="w-4 h-4 text-yellow-500 mr-1" />
                         {response.project_rating}
                       </span>
+                    </td>
+                    <td className="px-4 py-2 text-sm">
+                      {response.ecogamification_opinion || response.technology_reception ? (
+                        <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs">
+                          ✓ Respondido
+                        </span>
+                      ) : (
+                        <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                          - Não respondido
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-2 text-sm">
                       <button
@@ -623,6 +705,27 @@ export const EcobagsDashboard: React.FC = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Ecogamificação */}
+                {(selectedResponse.ecogamification_opinion || selectedResponse.technology_reception) && (
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-gray-700 mb-3 text-lg">Projeto Ecogamificação</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {selectedResponse.ecogamification_opinion && (
+                        <div className="bg-indigo-50 p-3 rounded">
+                          <p><strong>Opinião sobre Abordagem Tecnológica:</strong></p>
+                          <p className="text-indigo-700">{LABEL_MAPPINGS[selectedResponse.ecogamification_opinion as keyof typeof LABEL_MAPPINGS] || selectedResponse.ecogamification_opinion}</p>
+                        </div>
+                      )}
+                      {selectedResponse.technology_reception && (
+                        <div className="bg-indigo-50 p-3 rounded">
+                          <p><strong>Recepção da Tecnologia:</strong></p>
+                          <p className="text-indigo-700">{LABEL_MAPPINGS[selectedResponse.technology_reception as keyof typeof LABEL_MAPPINGS] || selectedResponse.technology_reception}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Depoimentos e Reflexões */}
                 <div className="space-y-4">

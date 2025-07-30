@@ -7,25 +7,41 @@ import { Login } from './components/Login';
 import { Ranking } from './components/Ranking';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import { ResultadosGincana } from './components/ResultadosGincana';
+import { EcobagsForm } from './components/EcobagsForm';
+import { EcobagsDashboard } from './components/EcobagsDashboard';
 
 export const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [showRegistration, setShowRegistration] = useState(false);
-  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking' | 'resultados'>('login');
+  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking' | 'resultados' | 'ecobags' | 'dashboard'>('login');
 
-  // Check if we're on the results page
+  // Check if we're on the results page or ecobags form
   useEffect(() => {
     const path = window.location.pathname;
     if (path === '/resultados-gincana' || path === '/resultados-gincana.html' || path.includes('resultados')) {
       setView('resultados');
       return;
     }
+    if (path === '/ecobags' || path === '/ecobags.html' || path.includes('ecobags')) {
+      setView('ecobags');
+      return;
+    }
+    if (path === '/dashboard' || path === '/dashboard.html' || path.includes('dashboard')) {
+      setView('dashboard');
+      return;
+    }
   }, []);
 
   useEffect(() => {
-    // Don't check auth if we're on results page
+    // Don't check auth if we're on results page, ecobags form, or dashboard
     const path = window.location.pathname;
     if (path === '/resultados-gincana' || path === '/resultados-gincana.html' || path.includes('resultados')) {
+      return;
+    }
+    if (path === '/ecobags' || path === '/ecobags.html' || path.includes('ecobags')) {
+      return;
+    }
+    if (path === '/dashboard' || path === '/dashboard.html' || path.includes('dashboard')) {
       return;
     }
 
@@ -155,6 +171,14 @@ export const App: React.FC = () => {
 
   if (view === 'resultados') {
     return <ResultadosGincana />;
+  }
+
+  if (view === 'ecobags') {
+    return <EcobagsForm />;
+  }
+
+  if (view === 'dashboard') {
+    return <EcobagsDashboard />;
   }
 
   return null;

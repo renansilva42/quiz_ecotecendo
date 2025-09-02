@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Avaliação - Projeto Ecobags | E.E.E.F. Inglês de Souza</title>
+    <meta name="description" content="Avalie o Projeto Ecobags da E.E.E.F. Inglês de Souza e compartilhe sua experiência sobre educação ambiental em Mosqueiro.">
+    <meta name="keywords" content="ecobags, educação ambiental, mosqueiro, sustentabilidade, meio ambiente">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ecotecendo-quiz.vercel.app/ecobags.html">
+    <meta property="og:title" content="Formulário de Avaliação - Projeto Ecobags">
+    <meta property="og:description" content="Avalie o Projeto Ecobags da E.E.E.F. Inglês de Souza e compartilhe sua experiência sobre educação ambiental em Mosqueiro.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ecotecendo-quiz.vercel.app/ecobags.html">
+    <meta property="twitter:title" content="Formulário de Avaliação - Projeto Ecobags">
+    <meta property="twitter:description" content="Avalie o Projeto Ecobags da E.E.E.F. Inglês de Souza e compartilhe sua experiência sobre educação ambiental em Mosqueiro.">
+    
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        #root {
+            min-height: 100vh;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);
+        }
+        
+        .loading-content {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #16a34a;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: #374151;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="loading">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Redirecionando para o formulário...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Redirect to the main app with ecobags route
+        setTimeout(function() {
+            window.location.href = '/?view=ecobags';
+        }, 1000);
+    </script>
+</body>
+</html>

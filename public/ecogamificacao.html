@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Projeto Ecogamificação | E.E.E.F Inglês de Souza</title>
+    <meta name="description" content="Dinâmica de desafios em vídeo sobre a preservação do patrimônio da Ilha de Mosqueiro. Cronograma, temas por turma, critérios de avaliação e orientações gerais." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f7fbff;
+        --bg-soft: #eef5ff;
+        --card: #ffffff;
+        --muted: #5b6b8a;
+        --text: #182037;
+        --accent: #6aa9ff;
+        --accent-strong: #3b82f6;
+        --ok: #16a34a;
+        --warn: #f59e0b;
+        --danger: #ef4444;
+        --ring: #3b82f626;
+        --shadow: 0 8px 20px rgba(31, 41, 55, 0.15);
+        --radius: 16px;
+        --radius-sm: 12px;
+        --radius-lg: 22px;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: 'Comic Neue', cursive, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background:
+          radial-gradient(1000px 500px at 90% -120px, #d6e8ff 0%, transparent 60%),
+          radial-gradient(900px 480px at -120px 60%, #e7f3ff 0%, transparent 60%),
+          linear-gradient(180deg, #f9fcff 0%, var(--bg) 100%);
+        color: var(--text);
+        line-height: 1.65;
+      }
+      a { color: var(--accent-strong); text-decoration: none; }
+      a:hover { color: #1d4ed8; }
+
+      .container {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(180deg, #ffffffcc 0%, #ffffff99 100%);
+        border-bottom: 1px solid #e6eefc;
+      }
+      .nav-inner {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 0;
+      }
+      .brand { display: flex; gap: 10px; align-items: center; }
+      .brand-mark {
+        width: 40px; height: 40px; border-radius: 12px;
+        background: linear-gradient(135deg, #ffd166, #9ae6b4);
+        box-shadow: inset 0 0 16px #ffffff88, 0 8px 16px #0000001a;
+      }
+      .brand h1 { margin: 0; font-size: 18px; letter-spacing: 0.4px; font-weight: 700; font-family: 'Fredoka One', cursive; }
+      .brand small { display: block; color: #4b5563; font-weight: 700; opacity: 0.95; }
+      .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+      .chip {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 14px; border-radius: 999px;
+        background: #ffffff; border: 1px solid #e6eefc; color: #1f2937;
+        font-weight: 800; font-size: 14px; letter-spacing: 0.2px;
+      }
+      .chip:hover { border-color: #bfdbfe; box-shadow: 0 0 0 6px var(--ring); }
+
+      .hero {
+        padding: 48px 0 28px;
+      }
+      .hero-inner {
+        display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: center;
+      }
+      .hero h2 {
+        margin: 0 0 8px 0; font-size: clamp(32px, 5.2vw, 46px); line-height: 1.12;
+        letter-spacing: -0.4px;
+        font-family: 'Fredoka One', cursive;
+      }
+      .hero p { margin: 0; color: #334155; font-size: 17px; }
+      .hero-card {
+        background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+        border: 1px solid #e6eefc; border-radius: var(--radius);
+        padding: 20px; box-shadow: var(--shadow);
+      }
+      .grid { display: grid; gap: 16px; }
+      .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      @media (max-width: 920px) {
+        .hero-inner { grid-template-columns: 1fr; }
+        .grid-3 { grid-template-columns: 1fr; }
+        .grid-2 { grid-template-columns: 1fr; }
+      }
+
+      .section { padding: 24px 0; }
+      .section h3 {
+        margin: 0 0 10px 0; font-size: 24px; letter-spacing: 0.2px;
+        font-family: 'Fredoka One', cursive;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid #e6eefc; border-radius: var(--radius);
+        padding: 16px; box-shadow: var(--shadow);
+      }
+      .muted { color: #64748b; font-weight: 600; }
+      .divider { height: 1px; background: #e6eefc; margin: 14px 0; border-radius: 1px; }
+      .list { margin: 0; padding-left: 18px; }
+      .kpi { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+      .tag { padding: 6px 12px; border-radius: 999px; font-size: 12px; background: #eef5ff; border: 1px solid #bfdbfe; color: #1f2937; font-weight: 800; }
+
+      .accordion { border-radius: var(--radius); overflow: hidden; border: 1px solid #e6eefc; background: #ffffff; }
+      .acc-item + .acc-item { border-top: 1px solid #edf2ff; }
+      .acc-btn { 
+        width: 100%; 
+        text-align: left; 
+        padding: 18px 20px; 
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe); 
+        color: #0f172a; 
+        border: 2px solid #bae6fd; 
+        font-weight: 900; 
+        letter-spacing: 0.3px; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        cursor: pointer; 
+        font-size: 16px; 
+        border-radius: 0;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      .acc-btn:hover { 
+        background: linear-gradient(135deg, #e0f2fe, #bae6fd); 
+        border-color: #7dd3fc;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+      }
+      .acc-btn:active { transform: translateY(0); }
+      .acc-btn::after {
+        content: '▶';
+        font-size: 18px;
+        color: #0ea5e9;
+        transition: transform 0.3s ease;
+        font-weight: bold;
+      }
+      .acc-item.open .acc-btn::after {
+        transform: rotate(90deg);
+      }
+      
+      /* Efeito de destaque para mostrar que é clicável */
+      .acc-btn {
+        animation: subtle-pulse 3s infinite;
+      }
+      @keyframes subtle-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.1); }
+        50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.1); }
+      }
+      .acc-content { max-height: 0; overflow: hidden; transition: max-height 300ms ease; background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%); }
+      .acc-panel { padding: 20px; }
+      .acc-item.open .acc-content { max-height: 600px; }
+      
+      /* Instrução visual para clicar */
+      .click-instruction {
+        text-align: center;
+        padding: 16px;
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        border: 2px dashed #f59e0b;
+        border-radius: var(--radius);
+        margin-bottom: 20px;
+        color: #92400e;
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .click-instruction::before {
+        content: '👆 ';
+        font-size: 20px;
+      }
+
+      .foot {
+        margin: 28px 0 40px; padding: 16px; text-align: center;
+        border: 2px dashed #bfdbfe; border-radius: var(--radius);
+        color: #0f172a; background: #f3f8ff;
+      }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+      .pill { display:inline-block; padding:8px 12px; border-radius:999px; background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; font-size:13px; font-weight:900; }
+      .lead { font-size:16px; color:#334155; margin-top:6px; }
+      .btn {
+        display:inline-flex; align-items:center; gap:10px; padding:12px 16px;
+        background: linear-gradient(180deg, #fde68a, #86efac);
+        color:#052e16; font-weight:900; border:0; border-radius:14px; cursor:pointer;
+        box-shadow: 0 8px 14px #134e4a22; letter-spacing:0.3px;
+      }
+      .btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+      .btn:active { transform: translateY(0); }
+      .anchor { scroll-margin-top: 90px; }
+      
+      /* Mascote flutuante */
+      .mascot {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #ffd166, #9ae6b4);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 100;
+      }
+      .mascot:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+      }
+      .mascot-speech {
+        position: absolute;
+        bottom: 90px;
+        right: 0;
+        background: white;
+        border: 2px solid #bfdbfe;
+        border-radius: 16px;
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #1f2937;
+        font-weight: 700;
+        max-width: 200px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+      .mascot-speech::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        right: 20px;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid white;
+      }
+      .mascot:hover .mascot-speech {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Formas flutuantes decorativas */
+      .floating-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+      }
+      .shape {
+        position: absolute;
+        opacity: 0.1;
+        animation: float 20s infinite linear;
+      }
+      .shape:nth-child(1) {
+        top: 10%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        background: #ffd166;
+        border-radius: 50%;
+        animation-delay: 0s;
+      }
+      .shape:nth-child(2) {
+        top: 20%;
+        right: 15%;
+        width: 30px;
+        height: 30px;
+        background: #9ae6b4;
+        border-radius: 50%;
+        animation-delay: 5s;
+      }
+      .shape:nth-child(3) {
+        bottom: 30%;
+        left: 20%;
+        width: 25px;
+        height: 25px;
+        background: #93c5fd;
+        border-radius: 50%;
+        animation-delay: 10s;
+      }
+      .shape:nth-child(4) {
+        bottom: 20%;
+        right: 25%;
+        width: 35px;
+        height: 35px;
+        background: #fbbf24;
+        border-radius: 50%;
+        animation-delay: 15s;
+      }
+      @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+        100% { transform: translateY(0px) rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="container nav-inner">
+        <div class="brand" aria-label="Projeto Ecogamificação">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div>
+            <h1>🌿 Projeto Ecogamificação</h1>
+            <small>E.E.E.F Inglês de Souza</small>
+          </div>
+        </div>
+        <nav class="nav-links" aria-label="Navegação principal">
+          <a class="chip" href="#cronograma">📅 Cronograma</a>
+          <a class="chip" href="#desafios">🎯 Desafios</a>
+          <a class="chip" href="#criterios">⭐ Critérios</a>
+          <a class="chip" href="#orientacoes">💡 Orientações</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero" id="topo">
+        <div class="hero-inner">
+          <div>
+            <span class="pill">🎬 Dinâmica: Desafios do Vídeo</span>
+            <h2 class="anchor">Preservação do Patrimônio da Ilha de Mosqueiro</h2>
+            <p class="lead">Crie um vídeo de 2 a 5 minutos que valorize o patrimônio de Mosqueiro. Mostre o que torna esse lugar especial e como todos nós podemos cuidar dele! 🌎✨</p>
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn" href="#desafios">🚀 Ver Desafios</a>
+              <a class="btn" style="background:linear-gradient(180deg,#93c5fd,#86efac); color:#052e16; box-shadow:0 8px 14px #134e4a22;" href="#criterios">📘 Critérios de Avaliação</a>
+            </div>
+          </div>
+          <div class="hero-card" role="region" aria-label="Resumo do evento">
+            <div class="grid grid-2">
+              <div class="card">
+                <div class="kpi">
+                  <div>
+                    <div class="muted">Semana de orientação</div>
+                    <div style="font-weight:800; font-size:18px; letter-spacing:0.3px;">02/09 a 05/09</div>
+                  </div>
+                  <span class="tag">Etapa 1</span>
+                </div>
+                <div class="divider"></div>
+                <div class="muted">Pesquise, organize ideias e defina seu roteiro. 📝</div>
+              </div>
+              <div class="card">
+                <div class="kpi">
+                  <div>
+                    <div class="muted">Entrega da atividade</div>
+                    <div style="font-weight:800; font-size:18px; letter-spacing:0.3px;">15/09 a 19/09</div>
+                  </div>
+                  <span class="tag">Etapa 2</span>
+                </div>
+                <div class="divider"></div>
+                <div class="muted">Grave, edite e envie seu vídeo para avaliação. 🎥</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cronograma" class="section anchor">
+        <h3>📅 Cronograma</h3>
+        <div class="grid grid-2">
+          <div class="card">
+            <strong>Semana de orientação</strong>
+            <div class="muted">02/09 a 05/09</div>
+            <ul class="list">
+              <li>Definição do tema e levantamento de fontes confiáveis</li>
+              <li>Planejamento do roteiro e recursos visuais</li>
+              <li>Organização do time e papéis</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>Semana de entrega</strong>
+            <div class="muted">15/09 a 19/09</div>
+            <ul class="list">
+              <li>Captação do vídeo (2 a 5 minutos)</li>
+              <li>Edição, revisão e checagem técnica</li>
+              <li>Envio para avaliação dentro do prazo</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="desafios" class="section anchor" aria-label="Desafios por turma e período">
+        <h3>🎯 Desafios por Turma</h3>
+        
+        <div class="click-instruction">
+          Clique em cada turma para ver os desafios! 🖱️
+        </div>
+        
+        <div class="accordion" id="acc-desafios">
+          <div class="acc-item">
+            <button class="acc-btn" aria-expanded="false">🧭 6º ANO MANHÃ - Professor Tony <span class="tag">2 categorias</span> <span style="font-size: 14px; color: #0ea5e9; font-weight: 600;">(Clique para abrir)</span></button>
+            <div class="acc-content" role="region" aria-label="6º Ano Manhã - Professor Tony">
+              <div class="acc-panel">
+                <div class="grid grid-2">
+                  <div class="card">
+                    <div class="muted">CATEGORIA A: PATRIMÔNIO MATERIAL</div>
+                    <strong>Tema: Hotel Farol</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos mostrando o patrimônio e explicando sua importância histórica.</div>
+                  </div>
+                  <div class="card">
+                    <div class="muted">CATEGORIA B: PATRIMÔNIO IMATERIAL</div>
+                    <strong>Tema: Peixe Moqueado</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos apresentando esta tradição cultural e sua importância para a comunidade.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" aria-expanded="false">🧭 7º ANO MANHÃ - Professor Sandro <span class="tag">2 categorias</span> <span style="font-size: 14px; color: #0ea5e9; font-weight: 600;">(Clique para abrir)</span></button>
+            <div class="acc-content" role="region" aria-label="7º Ano Manhã - Professor Sandro">
+              <div class="acc-panel">
+                <div class="grid grid-2">
+                  <div class="card">
+                    <div class="muted">CATEGORIA A: PATRIMÔNIO MATERIAL</div>
+                    <strong>Tema: Canhão do Bispo</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos mostrando o patrimônio e explicando sua importância histórica.</div>
+                  </div>
+                  <div class="card">
+                    <div class="muted">CATEGORIA B: PATRIMÔNIO IMATERIAL</div>
+                    <strong>Tema: Círio de Nossa Senhora do Ó</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos apresentando esta tradição cultural e sua importância para a comunidade.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" aria-expanded="false">🧭 8º ANO MANHÃ - Professor Rodrigo <span class="tag">2 categorias</span> <span style="font-size: 14px; color: #0ea5e9; font-weight: 600;">(Clique para abrir)</span></button>
+            <div class="acc-content" role="region" aria-label="8º Ano Manhã - Professor Rodrigo">
+              <div class="acc-panel">
+                <div class="grid grid-2">
+                  <div class="card">
+                    <div class="muted">CATEGORIA A: PATRIMÔNIO MATERIAL</div>
+                    <strong>Tema: Estátua Princesa Isabel</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos mostrando o patrimônio e explicando sua importância histórica.</div>
+                  </div>
+                  <div class="card">
+                    <div class="muted">CATEGORIA B: PATRIMÔNIO IMATERIAL</div>
+                    <strong>Tema: Festividade de São Pedro</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos apresentando esta tradição cultural e sua importância para a comunidade.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" aria-expanded="false">🧭 6º ANO TARDE - Professora Isa <span class="tag">2 categorias</span> <span style="font-size: 14px; color: #0ea5e9; font-weight: 600;">(Clique para abrir)</span></button>
+            <div class="acc-content" role="region" aria-label="6º Ano Tarde - Professora Isa">
+              <div class="acc-panel">
+                <div class="grid grid-2">
+                  <div class="card">
+                    <div class="muted">CATEGORIA A: PATRIMÔNIO MATERIAL</div>
+                    <strong>Tema: Hotel Farol</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos mostrando o patrimônio e explicando sua importância histórica.</div>
+                  </div>
+                  <div class="card">
+                    <div class="muted">CATEGORIA B: PATRIMÔNIO IMATERIAL</div>
+                    <strong>Tema: Peixe Moqueado</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos apresentando esta tradição cultural e sua importância para a comunidade.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" aria-expanded="false">🧭 7º ANO TARDE - Professor Élio <span class="tag">2 categorias</span> <span style="font-size: 14px; color: #0ea5e9; font-weight: 600;">(Clique para abrir)</span></button>
+            <div class="acc-content" role="region" aria-label="7º Ano Tarde - Professor Élio">
+              <div class="acc-panel">
+                <div class="grid grid-2">
+                  <div class="card">
+                    <div class="muted">CATEGORIA A: PATRIMÔNIO MATERIAL</div>
+                    <strong>Tema: Canhão do Bispo</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos mostrando o patrimônio e explicando sua importância histórica.</div>
+                  </div>
+                  <div class="card">
+                    <div class="muted">CATEGORIA B: PATRIMÔNIO IMATERIAL</div>
+                    <strong>Tema: Círio de Nossa Senhora do Ó</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos apresentando esta tradição cultural e sua importância para a comunidade.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" aria-expanded="false">🧭 8º ANO TARDE - Professora Nayara <span class="tag">2 categorias</span> <span style="font-size: 14px; color: #0ea5e9; font-weight: 600;">(Clique para abrir)</span></button>
+            <div class="acc-content" role="region" aria-label="8º Ano Tarde - Professora Nayara">
+              <div class="acc-panel">
+                <div class="grid grid-2">
+                  <div class="card">
+                    <div class="muted">CATEGORIA A: PATRIMÔNIO MATERIAL</div>
+                    <strong>Tema: Estátua Princesa Isabel</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos mostrando o patrimônio e explicando sua importância histórica.</div>
+                  </div>
+                  <div class="card">
+                    <div class="muted">CATEGORIA B: PATRIMÔNIO IMATERIAL</div>
+                    <strong>Tema: Festividade de São Pedro</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos apresentando esta tradição cultural e sua importância para a comunidade.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" aria-expanded="false">🧭 TURMA 901 - Professora Priscila <span class="tag">2 categorias</span> <span style="font-size: 14px; color: #0ea5e9; font-weight: 600;">(Clique para abrir)</span></button>
+            <div class="acc-content" role="region" aria-label="Turma 901 - Professora Priscila">
+              <div class="acc-panel">
+                <div class="grid grid-2">
+                  <div class="card">
+                    <div class="muted">CATEGORIA A: PATRIMÔNIO MATERIAL</div>
+                    <strong>Tema: Farol</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos mostrando o patrimônio e explicando sua importância histórica.</div>
+                  </div>
+                  <div class="card">
+                    <div class="muted">CATEGORIA B: PATRIMÔNIO IMATERIAL</div>
+                    <strong>Tema: Carnaval</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos apresentando esta tradição cultural e sua importância para a comunidade.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <button class="acc-btn" aria-expanded="false">🧭 TURMA 902 - Professor Keiler <span class="tag">2 categorias</span> <span style="font-size: 14px; color: #0ea5e9; font-weight: 600;">(Clique para abrir)</span></button>
+            <div class="acc-content" role="region" aria-label="Turma 902 - Professor Keiler">
+              <div class="acc-panel">
+                <div class="grid grid-2">
+                  <div class="card">
+                    <div class="muted">CATEGORIA A: PATRIMÔNIO MATERIAL</div>
+                    <strong>Tema: Farol</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos mostrando o patrimônio e explicando sua importância histórica.</div>
+                  </div>
+                  <div class="card">
+                    <div class="muted">CATEGORIA B: PATRIMÔNIO IMATERIAL</div>
+                    <strong>Tema: Carnaval</strong>
+                    <div class="divider"></div>
+                    <div>Desafio: Grave um vídeo de 2 a 5 minutos apresentando esta tradição cultural e sua importância para a comunidade.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="criterios" class="section anchor" aria-label="Critérios de avaliação">
+        <h3>⭐ Critérios de Avaliação dos Vídeos</h3>
+        <div class="grid grid-2">
+          <div class="card">
+            <strong>1. Criatividade (0-10)</strong>
+            <ul class="list">
+              <li>Originalidade na apresentação</li>
+              <li>Uso de recursos visuais interessantes</li>
+              <li>Abordagem inovadora do tema</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>2. Conteúdo histórico/cultural (0-10)</strong>
+            <ul class="list">
+              <li>Precisão das informações históricas</li>
+              <li>Contextualização cultural adequada</li>
+              <li>Demonstração de pesquisa aprofundada</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>3. Qualidade técnica (0-10)</strong>
+            <ul class="list">
+              <li>Qualidade de imagem e áudio</li>
+              <li>Edição e organização do vídeo</li>
+              <li>Clareza na comunicação</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>4. Mensagem de preservação (0-10)</strong>
+            <ul class="list">
+              <li>Conscientização sobre a importância da preservação</li>
+              <li>Propostas de cuidado com o patrimônio</li>
+              <li>Engajamento da comunidade</li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot"><strong>Pontuação total:</strong> 40 pontos</div>
+      </section>
+
+      <section id="orientacoes" class="section anchor" aria-label="Orientações gerais">
+        <h3>💡 Orientações Gerais</h3>
+        <div class="grid grid-3">
+          <div class="card">
+            <strong>Duração</strong>
+            <div class="muted">2 a 5 minutos</div>
+            <div class="divider"></div>
+            <div>Planeje um roteiro objetivo e envolvente dentro desse tempo.</div>
+          </div>
+          <div class="card">
+            <strong>Equipamentos</strong>
+            <div class="muted">Celular ou câmera</div>
+            <div class="divider"></div>
+            <div>Garanta boa iluminação e captação de áudio clara.</div>
+          </div>
+          <div class="card">
+            <strong>Pesquisa</strong>
+            <div class="muted">Fontes confiáveis</div>
+            <div class="divider"></div>
+            <div>Inclua informações históricas e culturais verificadas.</div>
+          </div>
+          <div class="card">
+            <strong>Apresentação</strong>
+            <div class="muted">Seja criativo</div>
+            <div class="divider"></div>
+            <div>Use imagens de apoio, narração, entrevistas ou mapas.</div>
+          </div>
+          <div class="card">
+            <strong>Preservação</strong>
+            <div class="muted">Mensagem clara</div>
+            <div class="divider"></div>
+            <div>Destaque por que preservar o patrimônio é importante.</div>
+          </div>
+          <div class="card">
+            <strong>Suporte</strong>
+            <div class="muted">Semana de orientação</div>
+            <div class="divider"></div>
+            <div>Em caso de dúvidas, procure seus professores.</div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="section" style="padding-bottom: 60px;">
+        <div class="foot">
+          <div><strong>Dúvidas?</strong> Procure seus professores durante a semana de orientação! 🙋‍♀️🙋‍♂️</div>
+          <div class="muted" style="margin-top:6px;">E.E.E.F Inglês de Souza • Ecogamificação</div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Mascote flutuante -->
+    <div class="mascot" title="Clique para animar!">
+      🌿
+      <div class="mascot-speech">
+        Olá! Vamos preservar o patrimônio de Mosqueiro juntos! 🌎✨
+      </div>
+    </div>
+
+    <!-- Formas flutuantes decorativas -->
+    <div class="floating-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+
+    <script>
+      // Acordeon acessível
+      const accItems = document.querySelectorAll('.acc-item');
+      accItems.forEach((item) => {
+        const btn = item.querySelector('.acc-btn');
+        const content = item.querySelector('.acc-content');
+        btn.addEventListener('click', () => {
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.acc-item.open').forEach((openItem) => {
+            if (openItem !== item) {
+              openItem.classList.remove('open');
+              const openBtn = openItem.querySelector('.acc-btn');
+              openBtn.setAttribute('aria-expanded', 'false');
+            }
+          });
+          item.classList.toggle('open');
+          btn.setAttribute('aria-expanded', String(!isOpen));
+        });
+      });
+
+      // Animação do mascote
+      const mascot = document.querySelector('.mascot');
+      mascot.addEventListener('click', () => {
+        mascot.style.transform = 'scale(1.2) rotate(10deg)';
+        setTimeout(() => {
+          mascot.style.transform = 'scale(1) rotate(0deg)';
+        }, 300);
+      });
+
+      // Adicionar animação de entrada aos cards
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Aplicar animação aos cards
+      document.querySelectorAll('.card, .acc-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'all 0.6s ease';
+        observer.observe(el);
+      });
+    </script>
+  </body>
+  </html>
+
+

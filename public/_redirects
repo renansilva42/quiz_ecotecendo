@@ -1,11 +1,11 @@
+# Water quiz routes - PRIORITY
+/water-quiz /water-quiz.html 200
+/water-quiz/ /water-quiz.html 200
+
 # Serve static files directly
 /resultados.html /resultados.html 200
 /resultados-gincana.html /public/resultados-gincana.html 200
 /water-quiz.html /water-quiz.html 200
-
-# Water quiz routes
-/water-quiz /water-quiz.html 200
-/water-quiz/ /water-quiz.html 200
 
 # All other routes go to React app
 /* /index.html 200

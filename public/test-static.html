@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Arquivo Estático</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f8ff; }
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .info { background: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="success">
+        <h1>✅ Arquivo Estático Funcionando!</h1>
+        <p>Se você está vendo esta página, o servidor está servindo arquivos estáticos corretamente.</p>
+    </div>
+    
+    <div class="info">
+        <h3>🔗 Teste as URLs do Quiz das Águas:</h3>
+        <ul>
+            <li><a href="/water-quiz.html" target="_blank">Teste: /water-quiz.html</a></li>
+            <li><a href="/water-quiz" target="_blank">Teste: /water-quiz</a></li>
+            <li><a href="/?water-quiz" target="_blank">Teste: /?water-quiz (já funciona)</a></li>
+        </ul>
+    </div>
+    
+    <div class="info">
+        <h3>📊 Informações:</h3>
+        <p><strong>URL Atual:</strong> <span id="currentUrl"></span></p>
+        <p><strong>Timestamp:</strong> <span id="timestamp"></span></p>
+    </div>
+
+    <script>
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('timestamp').textContent = new Date().toLocaleString('pt-BR');
+    </script>
+</body>
+</html>

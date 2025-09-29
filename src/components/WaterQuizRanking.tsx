@@ -191,72 +191,74 @@ export const WaterQuizRanking: React.FC<WaterQuizRankingProps> = ({ onPlayAgain,
                     key={`${result.user_email}-${result.created_at}`}
                     className={`p-3 sm:p-4 rounded-xl border-2 transition-all duration-200 hover:shadow-lg ${getRankColor(index)}`}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-                      <div className="flex items-center space-x-3 sm:space-x-4">
-                        <div className="flex-shrink-0">
-                          {getRankIcon(index)}
-                        </div>
-                        
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center space-x-1 sm:space-x-2">
-                            <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
-                              {result.user_name}
-                            </h3>
-                            {index < 3 && (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-800">
-                                #{index + 1}
-                              </span>
-                            )}
+                    <div className="w-full">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                        <div className="flex items-center space-x-3 sm:space-x-4">
+                          <div className="flex-shrink-0">
+                            {getRankIcon(index)}
                           </div>
                           
-                          {result.user_instagram && (
-                            <p className="text-xs sm:text-sm text-gray-600 truncate">
-                              @{result.user_instagram.replace('@', '')}
-                            </p>
-                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center space-x-1 sm:space-x-2">
+                              <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
+                                {result.user_name}
+                              </h3>
+                              {index < 3 && (
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-800">
+                                  #{index + 1}
+                                </span>
+                              )}
+                            </div>
+                            
+                            {result.user_instagram && (
+                              <p className="text-xs sm:text-sm text-gray-600 truncate">
+                                @{result.user_instagram.replace('@', '')}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Informações do usuário - Layout responsivo */}
+                        <div className="grid grid-cols-2 sm:flex sm:items-center sm:space-x-6 gap-2 sm:gap-6 text-sm">
+                          <div className="text-center bg-yellow-50 rounded-lg p-1.5 sm:bg-transparent sm:p-0">
+                            <div className="flex items-center justify-center text-cyan-600 font-bold text-sm sm:text-lg">
+                              <Droplets className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                              {result.water_saved}L
+                            </div>
+                            <p className="text-gray-500 text-xs sm:text-sm">Água economizada</p>
+                          </div>
+                          
+                          <div className="text-center bg-yellow-50 rounded-lg p-1.5 sm:bg-transparent sm:p-0">
+                            <div className="text-blue-600 font-bold text-sm sm:text-lg">
+                              {result.score}%
+                            </div>
+                            <p className="text-gray-500 text-xs sm:text-sm">Pontuação</p>
+                          </div>
+                          
+                          <div className="text-center bg-yellow-50 rounded-lg p-1.5 sm:bg-transparent sm:p-0">
+                            <div className="text-purple-600 font-bold text-sm sm:text-lg">
+                              {result.correct_answers}/20
+                            </div>
+                            <p className="text-gray-500 text-xs sm:text-sm">Acertos</p>
+                          </div>
+                          
+                          <div className="text-center bg-yellow-50 rounded-lg p-1.5 sm:bg-transparent sm:p-0">
+                            <div className="text-gray-600 font-bold text-sm sm:text-lg">
+                              {formatTime(result.total_time)}
+                            </div>
+                            <p className="text-gray-500 text-xs sm:text-sm">Tempo</p>
+                          </div>
                         </div>
                       </div>
                       
-                      {/* Informações do usuário - Layout responsivo */}
-                      <div className="grid grid-cols-2 sm:flex sm:items-center sm:space-x-6 gap-2 sm:gap-6 text-sm">
-                        <div className="text-center bg-yellow-50 rounded-lg p-1.5 sm:bg-transparent sm:p-0">
-                          <div className="flex items-center justify-center text-cyan-600 font-bold text-sm sm:text-lg">
-                            <Droplets className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                            {result.water_saved}L
-                          </div>
-                          <p className="text-gray-500 text-xs sm:text-sm">Água economizada</p>
+                      {/* Barra de progresso da pontuação */}
+                      <div className="mt-3 w-full">
+                        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                          <div
+                            className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all duration-500"
+                            style={{ width: `${Math.min(result.score, 100)}%` }}
+                          ></div>
                         </div>
-                        
-                        <div className="text-center bg-yellow-50 rounded-lg p-1.5 sm:bg-transparent sm:p-0">
-                          <div className="text-blue-600 font-bold text-sm sm:text-lg">
-                            {result.score}%
-                          </div>
-                          <p className="text-gray-500 text-xs sm:text-sm">Pontuação</p>
-                        </div>
-                        
-                        <div className="text-center bg-yellow-50 rounded-lg p-1.5 sm:bg-transparent sm:p-0">
-                          <div className="text-purple-600 font-bold text-sm sm:text-lg">
-                            {result.correct_answers}/20
-                          </div>
-                          <p className="text-gray-500 text-xs sm:text-sm">Acertos</p>
-                        </div>
-                        
-                        <div className="text-center bg-yellow-50 rounded-lg p-1.5 sm:bg-transparent sm:p-0">
-                          <div className="text-gray-600 font-bold text-sm sm:text-lg">
-                            {formatTime(result.total_time)}
-                          </div>
-                          <p className="text-gray-500 text-xs sm:text-sm">Tempo</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Barra de progresso da pontuação */}
-                    <div className="mt-3">
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all duration-500"
-                          style={{ width: `${result.score}%` }}
-                        ></div>
                       </div>
                     </div>
                   </div>

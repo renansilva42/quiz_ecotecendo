@@ -13,8 +13,8 @@ export const WaterQuizApp: React.FC = () => {
   console.log('WaterQuizApp - WATER_QUIZ_MODE:', (window as any).WATER_QUIZ_MODE);
   
   const [user, setUser] = useState<User | null>(null);
-  const [showRegistration, setShowRegistration] = useState(false);
-  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking'>('login');
+  const [showRegistration, setShowRegistration] = useState(true);
+  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking'>('registration');
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -27,7 +27,7 @@ export const WaterQuizApp: React.FC = () => {
         });
         setView('welcome');
       } else {
-        setView('login');
+        setView('registration');
       }
     });
 
@@ -42,7 +42,7 @@ export const WaterQuizApp: React.FC = () => {
         setView('welcome');
       } else {
         setUser(null);
-        setView('login');
+        setView('registration');
       }
     });
 
@@ -105,7 +105,7 @@ export const WaterQuizApp: React.FC = () => {
     setView('welcome');
   };
 
-  if (view === 'login') {
+  if (view === 'login' || view === 'registration') {
     return showRegistration ? (
       <WaterQuizRegistration onUserRegistered={handleUserRegistered} onSwitchToLogin={() => setShowRegistration(false)} />
     ) : (

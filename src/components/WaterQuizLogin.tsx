@@ -116,7 +116,7 @@ export const WaterQuizLogin: React.FC<WaterQuizLoginProps> = ({ onLoginSuccess, 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-6 px-8 rounded-3xl font-black text-xl hover:from-cyan-700 hover:to-blue-700 transform hover:scale-115 transition-all duration-300 shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 border-4 border-cyan-400 hover:border-cyan-500"
+              className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-6 px-8 rounded-3xl font-black text-xl hover:from-cyan-700 hover:to-blue-700 transform hover:scale-115 transition-all duration-300 shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 border-4 border-cyan-400 hover:border-cyan-500 whitespace-nowrap"
             >
               {isLoading ? (
                 <>
@@ -145,23 +145,35 @@ export const WaterQuizLogin: React.FC<WaterQuizLoginProps> = ({ onLoginSuccess, 
           </div>
 
           {/* Informações sobre o quiz */}
-          <div className="mt-8 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-3xl border-3 border-cyan-200 transform hover:scale-105 transition-all duration-300">
-            <h3 className="text-xl font-black text-cyan-800 mb-4 flex items-center justify-center">
+          <div className="mt-8 p-4 sm:p-6 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-3xl border-3 border-cyan-200 transform hover:scale-105 transition-all duration-300">
+            <h3 className="text-lg sm:text-xl font-black text-cyan-800 mb-4 flex items-center justify-center">
               💧 Sobre o Quiz das Águas 💧
             </h3>
-            <div className="space-y-3 text-base text-cyan-700">
-              <p className="flex items-center gap-3 font-semibold">
-                🎯 <span className="font-black">20 perguntas divertidas</span> sobre água!
-              </p>
-              <p className="flex items-center gap-3 font-semibold">
-                🌱 Aprenda sobre <span className="font-black">conservação</span> e <span className="font-black">sustentabilidade</span>!
-              </p>
-              <p className="flex items-center gap-3 font-semibold">
-                💡 Descubra quanta <span className="font-black">água você pode economizar</span>!
-              </p>
-              <p className="flex items-center gap-3 font-semibold">
-                🏆 Compete com seus amigos no <span className="font-black">ranking</span>!
-              </p>
+            <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-cyan-700">
+              <div className="flex items-start gap-2 sm:gap-3">
+                <span className="text-lg sm:text-xl flex-shrink-0">🎯</span>
+                <p className="font-semibold leading-relaxed">
+                  <span className="font-black">20 perguntas divertidas</span> sobre água!
+                </p>
+              </div>
+              <div className="flex items-start gap-2 sm:gap-3">
+                <span className="text-lg sm:text-xl flex-shrink-0">🌱</span>
+                <p className="font-semibold leading-relaxed">
+                  Aprenda sobre <span className="font-black">conservação</span> e <span className="font-black">sustentabilidade</span>!
+                </p>
+              </div>
+              <div className="flex items-start gap-2 sm:gap-3">
+                <span className="text-lg sm:text-xl flex-shrink-0">💡</span>
+                <p className="font-semibold leading-relaxed">
+                  Descubra quanta <span className="font-black">água você pode economizar</span>!
+                </p>
+              </div>
+              <div className="flex items-start gap-2 sm:gap-3">
+                <span className="text-lg sm:text-xl flex-shrink-0">🏆</span>
+                <p className="font-semibold leading-relaxed">
+                  Compete com seus amigos no <span className="font-black">ranking</span>!
+                </p>
+              </div>
             </div>
           </div>
         </div>

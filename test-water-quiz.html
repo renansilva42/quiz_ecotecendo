@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Quiz das Águas</title>
+    <script>
+        window.WATER_QUIZ_MODE = true;
+        console.log('Teste - Water Quiz mode activated!');
+    </script>
+</head>
+<body>
+    <div id="root">
+        <h1>Teste Quiz das Águas</h1>
+        <p>Se você está vendo isso, o HTML está funcionando!</p>
+        <p>WATER_QUIZ_MODE: <span id="mode"></span></p>
+        <p>URL: <span id="url"></span></p>
+    </div>
+    <script>
+        document.getElementById('mode').textContent = window.WATER_QUIZ_MODE;
+        document.getElementById('url').textContent = window.location.href;
+        console.log('Teste - Script executado!');
+    </script>
+</body>
+</html>

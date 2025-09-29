@@ -10,36 +10,91 @@ import { ResultadosGincana } from './components/ResultadosGincana';
 import { EcobagsForm } from './components/EcobagsForm';
 import { EcobagsDashboard } from './components/EcobagsDashboard';
 import { DashboardTest } from './components/DashboardTest';
+import { WaterQuizApp } from './components/WaterQuizApp';
 
 export const App: React.FC = () => {
+  console.log('App component is rendering!');
   const [user, setUser] = useState<User | null>(null);
   const [showRegistration, setShowRegistration] = useState(false);
-  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking' | 'resultados' | 'ecobags' | 'dashboard' | 'dashboard-test'>('login');
+  
+  
+  const [view, setView] = useState<'login' | 'registration' | 'welcome' | 'quiz' | 'ranking' | 'resultados' | 'ecobags' | 'dashboard' | 'dashboard-test' | 'water-quiz'>(() => {
+    // Check if we're in water-quiz mode
+    console.log('App.tsx - Initializing...');
+    console.log('Checking WATER_QUIZ_MODE:', (window as any).WATER_QUIZ_MODE);
+    console.log('Current URL:', window.location.href);
+    console.log('Current pathname:', window.location.pathname);
+    
+    // Force water-quiz mode for testing - ALWAYS return water-quiz if WATER_QUIZ_MODE is set
+    if ((window as any).WATER_QUIZ_MODE) {
+      console.log('WATER_QUIZ_MODE detected! Setting view to water-quiz');
+      return 'water-quiz';
+    }
+    
+    // Also check URL for water-quiz
+    if (window.location.pathname.includes('water-quiz') || 
+        window.location.href.includes('water-quiz')) {
+      console.log('URL contains water-quiz! Setting view to water-quiz');
+      return 'water-quiz';
+    }
+    
+    console.log('No water-quiz mode detected, defaulting to login');
+    return 'login';
+  });
 
   // Check if we're on the results page or ecobags form
   useEffect(() => {
     const path = window.location.pathname;
+    const hash = window.location.hash;
+    const search = window.location.search;
+    console.log('App.tsx useEffect - Current path:', path, 'hash:', hash, 'search:', search);
+    console.log('App.tsx useEffect - WATER_QUIZ_MODE:', (window as any).WATER_QUIZ_MODE);
+    
+    // Check for water-quiz first with multiple detection methods
+    if (path === '/water-quiz' || 
+        path === '/water-quiz.html' || 
+        path.includes('water-quiz') || 
+        hash === '#water-quiz' ||
+        search.includes('water-quiz') ||
+        window.location.href.includes('water-quiz') ||
+        (window as any).WATER_QUIZ_MODE) {
+      console.log('App.tsx useEffect - Setting view to water-quiz');
+      setView('water-quiz');
+      return;
+    }
+    
     if (path === '/resultados-gincana' || path === '/resultados-gincana.html' || path.includes('resultados')) {
+      console.log('Setting view to resultados');
       setView('resultados');
       return;
     }
     if (path === '/ecobags' || path === '/ecobags.html' || path.includes('ecobags')) {
+      console.log('Setting view to ecobags');
       setView('ecobags');
       return;
     }
     if (path === '/dashboard-test' || path === '/dashboard-test.html' || path.includes('dashboard-test')) {
+      console.log('Setting view to dashboard-test');
       setView('dashboard-test');
       return;
     }
     if (path === '/dashboard' || path === '/dashboard.html' || path.includes('dashboard')) {
+      console.log('Setting view to dashboard');
       setView('dashboard');
       return;
     }
+    console.log('No specific route found, using default login');
   }, []);
 
   useEffect(() => {
     // Don't check auth if we're on results page, ecobags form, or dashboard
     const path = window.location.pathname;
+    
+    // Check for water-quiz first
+    if (path === '/water-quiz' || path === '/water-quiz.html' || path.includes('water-quiz')) {
+      return;
+    }
+    
     if (path === '/resultados-gincana' || path === '/resultados-gincana.html' || path.includes('resultados')) {
       return;
     }
@@ -190,6 +245,16 @@ export const App: React.FC = () => {
     return <DashboardTest />;
   }
 
+  if (view === 'water-quiz') {
+    console.log('App.tsx - Rendering WaterQuizApp component!');
+    console.log('App.tsx - Current URL:', window.location.href);
+    console.log('App.tsx - WATER_QUIZ_MODE:', (window as any).WATER_QUIZ_MODE);
+    console.log('App.tsx - About to render WaterQuizApp...');
+    return <WaterQuizApp />;
+  }
+
+  console.log('App.tsx - Current view:', view);
+  console.log('App.tsx - Returning null or other component');
   return null;
 };
 

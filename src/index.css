@@ -1,3 +1,97 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Cache bust - 2025-01-08 17:00 - FORCE UPDATE */
+
+/* Global box-sizing fix */
+* {
+  box-sizing: border-box;
+}
+
+/* Clean input styling for forms */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Ensure form containers are properly sized */
+.max-w-md {
+  max-width: 28rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Custom focus styles for better UX */
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+}
+
+/* Smooth transitions for form elements */
+input {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Force spacing for form fields */
+.space-y-2 > * + * {
+  margin-top: 0.5rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1rem !important;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Ensure proper padding for inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 0.75rem 1rem 0.75rem 2.5rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* Force form spacing */
+form > div {
+  margin-bottom: 1.5rem !important;
+}
+
+form > div:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* NUCLEAR OPTION - Force all spacing */
+div[class*="space-y-2"] > * + * {
+  margin-top: 0.5rem !important;
+}
+
+div[class*="mb-4"] {
+  margin-bottom: 1rem !important;
+}
+
+div[class*="mb-2"] {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Force input styling */
+input {
+  padding: 0.75rem 1rem 0.75rem 2.5rem !important;
+  margin-bottom: 0 !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 0.5rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Force label spacing */
+label {
+  margin-bottom: 0.5rem !important;
+  display: block !important;
+}

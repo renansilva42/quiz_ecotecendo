@@ -12,6 +12,7 @@ interface ShuffledQuestion extends Question {
 interface QuizGameProps {
   user: User;
   onComplete: (result: GameResult) => void;
+  questions?: Question[];
 }
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -23,9 +24,9 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArray;
 }
 
-export const QuizGame: React.FC<QuizGameProps> = ({ user, onComplete }) => {
+export const QuizGame: React.FC<QuizGameProps> = ({ user, onComplete, questions: customQuestions }) => {
   const [questions] = useState<ShuffledQuestion[]>(() => {
-    const originalQuestions = getRandomQuestions();
+    const originalQuestions = customQuestions || getRandomQuestions();
     return originalQuestions.map((q) => {
       const shuffledOptions = shuffleArray(q.options);
       const shuffledCorrectAnswer = shuffledOptions.findIndex(

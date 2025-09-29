@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Quiz das Águas</title>
+    <script>
+        window.WATER_QUIZ_MODE = true;
+        console.log('Debug - Water Quiz mode activated!');
+        console.log('Debug - Current URL:', window.location.href);
+        console.log('Debug - WATER_QUIZ_MODE:', window.WATER_QUIZ_MODE);
+    </script>
+</head>
+<body>
+    <div id="root">
+        <h1>Debug Quiz das Águas</h1>
+        <p>Se você está vendo isso, o HTML está funcionando!</p>
+        <p>WATER_QUIZ_MODE: <span id="mode"></span></p>
+        <p>URL: <span id="url"></span></p>
+        <button onclick="testReact()">Testar React</button>
+        <div id="react-status">Aguardando React...</div>
+    </div>
+    <script>
+        document.getElementById('mode').textContent = window.WATER_QUIZ_MODE;
+        document.getElementById('url').textContent = window.location.href;
+        console.log('Debug - Script executado!');
+        
+        function testReact() {
+            console.log('Debug - Botão clicado!');
+            document.getElementById('react-status').textContent = 'React está funcionando!';
+        }
+        
+        // Teste de detecção de URL
+        if (window.location.href.includes('water-quiz')) {
+            console.log('Debug - URL contém water-quiz!');
+            document.getElementById('react-status').textContent = 'URL detectada corretamente!';
+        }
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

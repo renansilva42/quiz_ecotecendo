@@ -68,8 +68,8 @@ export const UserRegistration: React.FC<UserRegistrationProps> = ({ onUserRegist
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+      <div className="max-w-md w-full" style={{ maxWidth: '28rem', width: '100%', boxSizing: 'border-box' }}>
+        <div className="bg-white rounded-2xl shadow-xl p-8" style={{ boxSizing: 'border-box', overflow: 'hidden' }}>
           <div className="text-center mb-8">
             <img
               src={logo}
@@ -82,7 +82,7 @@ export const UserRegistration: React.FC<UserRegistrationProps> = ({ onUserRegist
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
+            <div className="space-y-2 mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nome Completo
               </label>
@@ -92,14 +92,14 @@ export const UserRegistration: React.FC<UserRegistrationProps> = ({ onUserRegist
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
                   placeholder="Seu nome completo"
                   required
                 />
               </div>
             </div>
 
-            <div>
+            <div className="space-y-2 mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email
               </label>
@@ -109,14 +109,14 @@ export const UserRegistration: React.FC<UserRegistrationProps> = ({ onUserRegist
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
                   placeholder="seu@email.com"
                   required
                 />
               </div>
             </div>
 
-            <div>
+            <div className="space-y-2 mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Instagram
               </label>
@@ -126,14 +126,14 @@ export const UserRegistration: React.FC<UserRegistrationProps> = ({ onUserRegist
                   type="text"
                   value={instagram}
                   onChange={(e) => setInstagram(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
                   placeholder="@seuinstagram"
                   required
                 />
               </div>
             </div>
 
-            <div>
+            <div className="space-y-2 mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Senha
               </label>
@@ -143,7 +143,7 @@ export const UserRegistration: React.FC<UserRegistrationProps> = ({ onUserRegist
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
                   placeholder="Sua senha"
                   required
                 />

@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    include: "**/*.{jsx,tsx}",
+    fastRefresh: false
+  })],
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
@@ -18,4 +21,12 @@ export default defineConfig({
     copyPublicDir: true,
   },
   publicDir: 'public',
+  server: {
+    historyApiFallback: true,
+    open: false,
+    hmr: false
+  },
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
+  }
 });

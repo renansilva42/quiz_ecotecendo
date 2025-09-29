@@ -11,6 +11,10 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onViewRan
   const handleViewGincanaResults = () => {
     window.location.href = '/resultados-gincana';
   };
+
+  const handleWaterQuiz = () => {
+    window.location.href = '/water-quiz.html';
+  };
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-4xl w-full">
@@ -83,6 +87,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onViewRan
             className="bg-white text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200"
           >
             Ver Ranking
+          </button>
+
+          <button
+            onClick={handleWaterQuiz}
+            className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-cyan-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+          >
+            💧 Quiz das Águas
           </button>
 
           <button

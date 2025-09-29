@@ -24,6 +24,8 @@ export const App: React.FC = () => {
     console.log('Checking WATER_QUIZ_MODE:', (window as any).WATER_QUIZ_MODE);
     console.log('Current URL:', window.location.href);
     console.log('Current pathname:', window.location.pathname);
+    console.log('Current search:', window.location.search);
+    console.log('Current hash:', window.location.hash);
     
     // Force water-quiz mode for testing - ALWAYS return water-quiz if WATER_QUIZ_MODE is set
     if ((window as any).WATER_QUIZ_MODE) {
@@ -31,9 +33,16 @@ export const App: React.FC = () => {
       return 'water-quiz';
     }
     
-    // Also check URL for water-quiz
-    if (window.location.pathname.includes('water-quiz') || 
-        window.location.href.includes('water-quiz')) {
+    // Check URL for water-quiz with multiple methods
+    const pathname = window.location.pathname;
+    const search = window.location.search;
+    const hash = window.location.hash;
+    const href = window.location.href;
+    
+    if (pathname.includes('water-quiz') || 
+        search.includes('water-quiz') ||
+        hash.includes('water-quiz') ||
+        href.includes('water-quiz')) {
       console.log('URL contains water-quiz! Setting view to water-quiz');
       return 'water-quiz';
     }
@@ -47,17 +56,19 @@ export const App: React.FC = () => {
     const path = window.location.pathname;
     const hash = window.location.hash;
     const search = window.location.search;
+    const href = window.location.href;
     console.log('App.tsx useEffect - Current path:', path, 'hash:', hash, 'search:', search);
     console.log('App.tsx useEffect - WATER_QUIZ_MODE:', (window as any).WATER_QUIZ_MODE);
     
     // Check for water-quiz first with multiple detection methods
-    if (path === '/water-quiz' || 
+    if ((window as any).WATER_QUIZ_MODE ||
+        path === '/water-quiz' || 
         path === '/water-quiz.html' || 
         path.includes('water-quiz') || 
         hash === '#water-quiz' ||
+        hash.includes('water-quiz') ||
         search.includes('water-quiz') ||
-        window.location.href.includes('water-quiz') ||
-        (window as any).WATER_QUIZ_MODE) {
+        href.includes('water-quiz')) {
       console.log('App.tsx useEffect - Setting view to water-quiz');
       setView('water-quiz');
       return;
@@ -89,9 +100,18 @@ export const App: React.FC = () => {
   useEffect(() => {
     // Don't check auth if we're on results page, ecobags form, or dashboard
     const path = window.location.pathname;
+    const search = window.location.search;
+    const hash = window.location.hash;
+    const href = window.location.href;
     
-    // Check for water-quiz first
-    if (path === '/water-quiz' || path === '/water-quiz.html' || path.includes('water-quiz')) {
+    // Check for water-quiz first with multiple detection methods
+    if ((window as any).WATER_QUIZ_MODE ||
+        path === '/water-quiz' || 
+        path === '/water-quiz.html' || 
+        path.includes('water-quiz') || 
+        hash.includes('water-quiz') ||
+        search.includes('water-quiz') ||
+        href.includes('water-quiz')) {
       return;
     }
     

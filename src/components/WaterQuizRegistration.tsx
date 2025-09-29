@@ -224,7 +224,7 @@ export const WaterQuizRegistration: React.FC<WaterQuizRegistrationProps> = ({ on
 
           {/* Informações sobre o quiz */}
           <div className="mt-8 p-4 sm:p-6 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-3xl border-3 border-cyan-200 transform hover:scale-105 transition-all duration-300">
-            <h3 className="text-lg sm:text-xl font-black text-cyan-800 mb-4 flex items-center justify-center">
+            <h3 className="text-lg sm:text-xl font-black text-cyan-800 mb-4 flex items-center justify-center whitespace-nowrap">
               💧 Sobre o Quiz das Águas 💧
             </h3>
             <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-cyan-700">

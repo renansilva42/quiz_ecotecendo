@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Admin Login - Quiz das Águas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .debug-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            background: #f9fafb;
+        }
+        .debug-section h3 {
+            color: #374151;
+            margin-top: 0;
+        }
+        .button {
+            background: #0891b2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .button:hover {
+            background: #0e7490;
+        }
+        .button.danger {
+            background: #dc2626;
+        }
+        .button.danger:hover {
+            background: #b91c1c;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        .code {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Debug Admin Login</h1>
+            <p>Diagnóstico do problema de login do administrador</p>
+        </div>
+
+        <div class="debug-section">
+            <h3>📋 Configuração do Supabase</h3>
+            <div class="input-group">
+                <label for="supabaseUrl">Supabase URL:</label>
+                <input type="text" id="supabaseUrl" placeholder="https://seu-projeto.supabase.co">
+            </div>
+            <div class="input-group">
+                <label for="supabaseKey">Supabase Anon Key:</label>
+                <input type="text" id="supabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+            </div>
+            <button class="button" onclick="testConnection()">Testar Conexão</button>
+            <div id="connectionStatus"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>👤 Verificar Usuário Admin</h3>
+            <button class="button" onclick="checkAdminUser()">Verificar se Admin Existe</button>
+            <button class="button" onclick="listAllUsers()">Listar Todos os Usuários</button>
+            <div id="userStatus"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>🔐 Testar Login</h3>
+            <div class="input-group">
+                <label for="testEmail">Email:</label>
+                <input type="email" id="testEmail" value="admin@ecotecendo.com.br">
+            </div>
+            <div class="input-group">
+                <label for="testPassword">Senha:</label>
+                <input type="password" id="testPassword" value="admin123456">
+            </div>
+            <button class="button" onclick="testLogin()">Testar Login</button>
+            <div id="loginStatus"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>🛠️ Criar Usuário Admin</h3>
+            <button class="button" onclick="createAdminUser()">Criar Usuário Admin</button>
+            <button class="button danger" onclick="deleteAdminUser()">Deletar Usuário Admin</button>
+            <div id="createStatus"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>📊 Status do Sistema</h3>
+            <div id="systemStatus">
+                <div class="status info">Configure as credenciais do Supabase e execute os testes</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let supabase = null;
+
+        // Inicializar Supabase
+        async function initSupabase() {
+            const url = document.getElementById('supabaseUrl').value;
+            const key = document.getElementById('supabaseKey').value;
+            
+            if (!url || !key) {
+                showStatus('systemStatus', 'Configure as credenciais do Supabase primeiro', 'error');
+                return null;
+            }
+            
+            try {
+                const { createClient } = await import('https://cdn.skypack.dev/@supabase/supabase-js@2');
+                supabase = createClient(url, key);
+                return supabase;
+            } catch (error) {
+                showStatus('systemStatus', 'Erro ao carregar Supabase: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        // Mostrar status
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // Testar conexão
+        async function testConnection() {
+            showStatus('connectionStatus', 'Testando conexão...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                const { data, error } = await client
+                    .from('water_quiz_settings')
+                    .select('*')
+                    .limit(1);
+                
+                if (error) {
+                    showStatus('connectionStatus', 'Erro na conexão: ' + error.message, 'error');
+                } else {
+                    showStatus('connectionStatus', '✅ Conexão estabelecida com sucesso!', 'success');
+                }
+            } catch (error) {
+                showStatus('connectionStatus', 'Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Verificar usuário admin
+        async function checkAdminUser() {
+            showStatus('userStatus', 'Verificando usuário admin...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                const { data, error } = await client.auth.admin.listUsers();
+                
+                if (error) {
+                    showStatus('userStatus', 'Erro ao listar usuários: ' + error.message, 'error');
+                } else {
+                    const adminUser = data.users.find(user => user.email === 'admin@ecotecendo.com.br');
+                    if (adminUser) {
+                        showStatus('userStatus', `✅ Usuário admin encontrado!<br>
+                            Email: ${adminUser.email}<br>
+                            ID: ${adminUser.id}<br>
+                            Criado em: ${new Date(adminUser.created_at).toLocaleString()}<br>
+                            Email confirmado: ${adminUser.email_confirmed_at ? 'Sim' : 'Não'}`, 'success');
+                    } else {
+                        showStatus('userStatus', '❌ Usuário admin não encontrado', 'error');
+                    }
+                }
+            } catch (error) {
+                showStatus('userStatus', 'Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Listar todos os usuários
+        async function listAllUsers() {
+            showStatus('userStatus', 'Listando todos os usuários...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                const { data, error } = await client.auth.admin.listUsers();
+                
+                if (error) {
+                    showStatus('userStatus', 'Erro ao listar usuários: ' + error.message, 'error');
+                } else {
+                    let usersList = 'Usuários encontrados:<br><br>';
+                    data.users.forEach((user, index) => {
+                        usersList += `${index + 1}. ${user.email} (ID: ${user.id})<br>`;
+                    });
+                    showStatus('userStatus', usersList, 'info');
+                }
+            } catch (error) {
+                showStatus('userStatus', 'Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Testar login
+        async function testLogin() {
+            showStatus('loginStatus', 'Testando login...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                const email = document.getElementById('testEmail').value;
+                const password = document.getElementById('testPassword').value;
+                
+                const { data, error } = await client.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) {
+                    showStatus('loginStatus', `❌ Erro no login: ${error.message}<br>
+                        Código: ${error.status}<br>
+                        Detalhes: ${JSON.stringify(error)}`, 'error');
+                } else {
+                    showStatus('loginStatus', `✅ Login realizado com sucesso!<br>
+                        Usuário: ${data.user.email}<br>
+                        ID: ${data.user.id}<br>
+                        Sessão ativa: ${data.session ? 'Sim' : 'Não'}`, 'success');
+                }
+            } catch (error) {
+                showStatus('loginStatus', 'Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Criar usuário admin
+        async function createAdminUser() {
+            showStatus('createStatus', 'Criando usuário admin...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                const { data, error } = await client.auth.signUp({
+                    email: 'admin@ecotecendo.com.br',
+                    password: 'admin123456',
+                    options: {
+                        data: {
+                            name: 'Administrador',
+                            instagram: 'admin_ecotecendo'
+                        }
+                    }
+                });
+                
+                if (error) {
+                    showStatus('createStatus', `❌ Erro ao criar usuário: ${error.message}<br>
+                        Código: ${error.status}<br>
+                        Detalhes: ${JSON.stringify(error)}`, 'error');
+                } else {
+                    showStatus('createStatus', `✅ Usuário admin criado com sucesso!<br>
+                        Email: ${data.user?.email}<br>
+                        ID: ${data.user?.id}<br>
+                        Confirmação necessária: ${data.user?.email_confirmed_at ? 'Não' : 'Sim'}`, 'success');
+                }
+            } catch (error) {
+                showStatus('createStatus', 'Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Deletar usuário admin
+        async function deleteAdminUser() {
+            if (!confirm('Tem certeza que deseja deletar o usuário admin? Esta ação não pode ser desfeita.')) {
+                return;
+            }
+            
+            showStatus('createStatus', 'Deletando usuário admin...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                // Primeiro, listar usuários para encontrar o ID
+                const { data: usersData, error: listError } = await client.auth.admin.listUsers();
+                
+                if (listError) {
+                    showStatus('createStatus', 'Erro ao listar usuários: ' + listError.message, 'error');
+                    return;
+                }
+                
+                const adminUser = usersData.users.find(user => user.email === 'admin@ecotecendo.com.br');
+                
+                if (!adminUser) {
+                    showStatus('createStatus', 'Usuário admin não encontrado', 'error');
+                    return;
+                }
+                
+                const { error } = await client.auth.admin.deleteUser(adminUser.id);
+                
+                if (error) {
+                    showStatus('createStatus', 'Erro ao deletar usuário: ' + error.message, 'error');
+                } else {
+                    showStatus('createStatus', '✅ Usuário admin deletado com sucesso!', 'success');
+                }
+            } catch (error) {
+                showStatus('createStatus', 'Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('systemStatus', 'Configure as credenciais do Supabase e execute os testes para diagnosticar o problema', 'info');
+        });
+    </script>
+</body>
+</html>

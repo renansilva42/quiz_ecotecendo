@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Droplets, Clock, Users, RotateCcw, Home, Award, Zap } from 'lucide-react';
+import { Trophy, Droplets, Clock, Users, RotateCcw, Home, Award, Zap, LogOut } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface WaterQuizResult {
@@ -17,9 +17,10 @@ interface WaterQuizResult {
 interface WaterQuizRankingProps {
   onPlayAgain: () => void;
   onBackToWelcome: () => void;
+  onLogout: () => void;
 }
 
-export const WaterQuizRanking: React.FC<WaterQuizRankingProps> = ({ onPlayAgain, onBackToWelcome }) => {
+export const WaterQuizRanking: React.FC<WaterQuizRankingProps> = ({ onPlayAgain, onBackToWelcome, onLogout }) => {
   const [results, setResults] = useState<WaterQuizResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,6 +121,15 @@ export const WaterQuizRanking: React.FC<WaterQuizRankingProps> = ({ onPlayAgain,
 
   return (
     <div className="min-h-screen p-4 bg-gradient-to-br from-cyan-50 to-blue-100">
+      {/* Botão Sair no canto superior direito */}
+      <button
+        onClick={onLogout}
+        className="fixed top-4 right-4 z-50 bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-all duration-200 shadow-lg flex items-center gap-2"
+      >
+        <LogOut className="w-4 h-4" />
+        Sair
+      </button>
+      
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">

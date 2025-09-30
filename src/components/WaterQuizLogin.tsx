@@ -35,11 +35,14 @@ export const WaterQuizLogin: React.FC<WaterQuizLoginProps> = ({ onLoginSuccess, 
     }
 
     if (data.user) {
+      const isAdmin = data.user.email === 'admin@ecotecendo.com.br';
       const user: User = {
         name: data.user.user_metadata?.name || '',
         email: data.user.email || '',
         instagram: data.user.user_metadata?.instagram || '',
+        isAdmin,
       };
+      console.log('✅ Login successful:', { email: data.user.email, isAdmin });
       onLoginSuccess(user);
     }
 

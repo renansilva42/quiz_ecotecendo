@@ -54,11 +54,14 @@ export const WaterQuizRegistration: React.FC<WaterQuizRegistrationProps> = ({ on
     }
 
     if (data.user) {
+      const isAdmin = data.user.email === 'admin@ecotecendo.com.br';
       const user: User = {
         name: name.trim(),
         email: email.trim(),
         instagram: instagram.trim(),
+        isAdmin,
       };
+      console.log('✅ Registration successful:', { email: data.user.email, isAdmin });
       onUserRegistered(user);
     }
 

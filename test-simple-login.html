@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Simples de Login</title>
+</head>
+<body>
+    <h1>Teste de Login Admin</h1>
+    <input type="email" id="email" placeholder="Email" value="admin@ecotecendo.com.br">
+    <input type="password" id="password" placeholder="Senha" value="admin123456">
+    <button onclick="testLogin()">Testar Login</button>
+    <div id="result"></div>
+
+    <script type="module">
+        // Substitua pelas suas credenciais
+        const SUPABASE_URL = 'SUA_SUPABASE_URL';
+        const SUPABASE_KEY = 'SUA_SUPABASE_ANON_KEY';
+        
+        const { createClient } = await import('https://cdn.skypack.dev/@supabase/supabase-js@2');
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        window.testLogin = async function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) {
+                    document.getElementById('result').innerHTML = `
+                        <h3>❌ Erro:</h3>
+                        <p><strong>Mensagem:</strong> ${error.message}</p>
+                        <p><strong>Código:</strong> ${error.status}</p>
+                        <p><strong>Detalhes:</strong> ${JSON.stringify(error, null, 2)}</p>
+                    `;
+                } else {
+                    document.getElementById('result').innerHTML = `
+                        <h3>✅ Sucesso!</h3>
+                        <p><strong>Email:</strong> ${data.user.email}</p>
+                        <p><strong>ID:</strong> ${data.user.id}</p>
+                        <p><strong>Confirmado:</strong> ${data.user.email_confirmed_at ? 'Sim' : 'Não'}</p>
+                    `;
+                }
+            } catch (err) {
+                document.getElementById('result').innerHTML = `
+                    <h3>❌ Erro Inesperado:</h3>
+                    <p>${err.message}</p>
+                `;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste do Sistema de Admin - Quiz das Águas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #0891b2;
+            margin-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            background: #f9fafb;
+        }
+        .test-section h3 {
+            color: #374151;
+            margin-top: 0;
+        }
+        .button {
+            background: #0891b2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .button:hover {
+            background: #0e7490;
+        }
+        .button.danger {
+            background: #dc2626;
+        }
+        .button.danger:hover {
+            background: #b91c1c;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        .code {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-left: 4px solid #0891b2;
+            border-radius: 0 5px 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ Teste do Sistema de Administração</h1>
+            <p>Quiz das Águas - Painel de Controle</p>
+        </div>
+
+        <div class="test-section">
+            <h3>📋 Instruções de Teste</h3>
+            <div class="step">
+                <strong>1. Configuração Inicial:</strong>
+                <p>Execute a migração SQL no Supabase antes de começar os testes.</p>
+            </div>
+            <div class="step">
+                <strong>2. Criar Usuário Admin:</strong>
+                <p>Use o email <code>admin@ecotecendo.com.br</code> e senha <code>admin123456</code></p>
+            </div>
+            <div class="step">
+                <strong>3. Testar Funcionalidades:</strong>
+                <p>Use os botões abaixo para testar cada funcionalidade do sistema.</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Testes de Funcionalidade</h3>
+            
+            <button class="button" onclick="testDatabaseConnection()">
+                Testar Conexão com Banco
+            </button>
+            
+            <button class="button" onclick="testQuizSettings()">
+                Testar Configurações do Quiz
+            </button>
+            
+            <button class="button" onclick="testResultsTable()">
+                Testar Tabela de Resultados
+            </button>
+            
+            <button class="button" onclick="testAdminAccess()">
+                Testar Acesso de Admin
+            </button>
+            
+            <button class="button danger" onclick="testDeleteResults()">
+                Testar Exclusão de Resultados
+            </button>
+            
+            <div id="testResults"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Status do Sistema</h3>
+            <div id="systemStatus">
+                <div class="status info">Clique nos botões acima para testar o sistema</div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔗 Links Úteis</h3>
+            <p>
+                <a href="water-quiz.html" target="_blank">🎮 Ir para o Quiz</a> |
+                <a href="ADMIN_SETUP.md" target="_blank">📖 Documentação</a> |
+                <a href="create-admin-user.js" target="_blank">👤 Script de Criação de Admin</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Configurações do Supabase (substitua pelas suas)
+        const SUPABASE_URL = 'SUA_SUPABASE_URL_AQUI';
+        const SUPABASE_KEY = 'SUA_SUPABASE_ANON_KEY_AQUI';
+        
+        let supabase = null;
+
+        // Inicializar Supabase
+        async function initSupabase() {
+            if (supabase) return supabase;
+            
+            try {
+                const { createClient } = await import('https://cdn.skypack.dev/@supabase/supabase-js@2');
+                supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+                return supabase;
+            } catch (error) {
+                showStatus('Erro ao carregar Supabase: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        // Mostrar status
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('systemStatus');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // Testar conexão com banco
+        async function testDatabaseConnection() {
+            showStatus('Testando conexão com banco de dados...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                const { data, error } = await client
+                    .from('water_quiz_settings')
+                    .select('*')
+                    .limit(1);
+                
+                if (error) {
+                    showStatus('Erro na conexão: ' + error.message, 'error');
+                } else {
+                    showStatus('✅ Conexão com banco estabelecida com sucesso!', 'success');
+                }
+            } catch (error) {
+                showStatus('Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Testar configurações do quiz
+        async function testQuizSettings() {
+            showStatus('Testando configurações do quiz...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                const { data, error } = await client
+                    .from('water_quiz_settings')
+                    .select('*');
+                
+                if (error) {
+                    showStatus('Erro ao buscar configurações: ' + error.message, 'error');
+                } else {
+                    const settings = data[0];
+                    if (settings) {
+                        showStatus(`✅ Configurações encontradas. Quiz ${settings.quiz_enabled ? 'ATIVO' : 'BLOQUEADO'}`, 'success');
+                    } else {
+                        showStatus('⚠️ Nenhuma configuração encontrada. Execute a migração SQL.', 'error');
+                    }
+                }
+            } catch (error) {
+                showStatus('Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Testar tabela de resultados
+        async function testResultsTable() {
+            showStatus('Testando tabela de resultados...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                const { data, error } = await client
+                    .from('water_quiz_results')
+                    .select('count(*)')
+                    .single();
+                
+                if (error) {
+                    showStatus('Erro ao acessar resultados: ' + error.message, 'error');
+                } else {
+                    showStatus(`✅ Tabela de resultados acessível. Total de registros: ${data.count}`, 'success');
+                }
+            } catch (error) {
+                showStatus('Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Testar acesso de admin
+        async function testAdminAccess() {
+            showStatus('Testando acesso de admin...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                // Tentar fazer login como admin
+                const { data, error } = await client.auth.signInWithPassword({
+                    email: 'admin@ecotecendo.com.br',
+                    password: 'admin123456'
+                });
+                
+                if (error) {
+                    showStatus('Erro no login de admin: ' + error.message, 'error');
+                } else {
+                    showStatus('✅ Login de admin realizado com sucesso!', 'success');
+                    
+                    // Testar permissões de admin
+                    const { data: settingsData, error: settingsError } = await client
+                        .from('water_quiz_settings')
+                        .update({ quiz_enabled: true })
+                        .eq('id', '1');
+                    
+                    if (settingsError) {
+                        showStatus('⚠️ Login OK, mas sem permissões de admin: ' + settingsError.message, 'error');
+                    } else {
+                        showStatus('✅ Permissões de admin confirmadas!', 'success');
+                    }
+                }
+            } catch (error) {
+                showStatus('Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Testar exclusão de resultados
+        async function testDeleteResults() {
+            if (!confirm('⚠️ ATENÇÃO: Este teste irá excluir TODOS os resultados do ranking. Continuar?')) {
+                return;
+            }
+            
+            showStatus('Testando exclusão de resultados...', 'info');
+            
+            try {
+                const client = await initSupabase();
+                if (!client) return;
+                
+                // Fazer login como admin primeiro
+                const { data: authData, error: authError } = await client.auth.signInWithPassword({
+                    email: 'admin@ecotecendo.com.br',
+                    password: 'admin123456'
+                });
+                
+                if (authError) {
+                    showStatus('Erro no login: ' + authError.message, 'error');
+                    return;
+                }
+                
+                // Tentar excluir todos os resultados
+                const { data, error } = await client
+                    .from('water_quiz_results')
+                    .delete()
+                    .neq('id', '00000000-0000-0000-0000-000000000000');
+                
+                if (error) {
+                    showStatus('Erro ao excluir resultados: ' + error.message, 'error');
+                } else {
+                    showStatus('✅ Resultados excluídos com sucesso! (Teste concluído)', 'success');
+                }
+            } catch (error) {
+                showStatus('Erro inesperado: ' + error.message, 'error');
+            }
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('Sistema de teste carregado. Configure as credenciais do Supabase no código e execute os testes.', 'info');
+        });
+    </script>
+</body>
+</html>

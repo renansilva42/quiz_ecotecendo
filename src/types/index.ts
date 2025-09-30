@@ -2,6 +2,7 @@ export interface User {
   name: string;
   email: string;
   instagram: string;
+  isAdmin?: boolean;
 }
 
 export interface Question {

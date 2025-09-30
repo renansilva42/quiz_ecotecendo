@@ -1,15 +1,28 @@
 import React from 'react';
-import { Droplets, Clock, Trophy, Users, Play, Star, Zap } from 'lucide-react';
+import { Droplets, Clock, Trophy, Users, Play, Star, Zap, Shield, Lock, LogOut } from 'lucide-react';
 
 interface WaterQuizWelcomeProps {
-  onStart: () => void;
+  onStart: () => void | Promise<void>;
   onViewRanking: () => void;
+  onAdminAccess?: () => void;
+  onLogout: () => void;
   userName?: string;
+  quizEnabled?: boolean;
+  isAdmin?: boolean;
 }
 
-export const WaterQuizWelcome: React.FC<WaterQuizWelcomeProps> = ({ onStart, onViewRanking, userName }) => {
+export const WaterQuizWelcome: React.FC<WaterQuizWelcomeProps> = ({ onStart, onViewRanking, onAdminAccess, onLogout, userName, quizEnabled = true, isAdmin = false }) => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Botão Sair no canto superior direito */}
+      <button
+        onClick={onLogout}
+        className="fixed top-4 right-4 z-50 bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-all duration-200 shadow-lg flex items-center gap-2"
+      >
+        <LogOut className="w-4 h-4" />
+        Sair
+      </button>
+      
       {/* Elementos decorativos animados */}
       <div className="absolute top-10 left-10 w-12 h-12 bg-cyan-300 rounded-full animate-bounce opacity-60"></div>
       <div className="absolute top-20 right-20 w-8 h-8 bg-blue-300 rounded-full animate-pulse opacity-40"></div>
@@ -44,6 +57,49 @@ export const WaterQuizWelcome: React.FC<WaterQuizWelcomeProps> = ({ onStart, onV
               </p>
             </div>
           )}
+
+          {/* Quiz Status */}
+          <div className={`mb-6 sm:mb-8 p-4 sm:p-6 rounded-3xl border-3 transform hover:scale-105 transition-all duration-300 shadow-xl ${
+            quizEnabled 
+              ? 'bg-gradient-to-r from-green-100 to-green-200 border-green-300' 
+              : isAdmin
+              ? 'bg-gradient-to-r from-orange-100 to-orange-200 border-orange-300'
+              : 'bg-gradient-to-r from-red-100 to-red-200 border-red-300'
+          }`}>
+            <div className="flex flex-col items-center justify-center gap-2">
+              {quizEnabled ? (
+                <>
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">✅</span>
+                    <p className="text-lg sm:text-xl text-green-800 font-bold">
+                      Quiz Ativo - Pronto para jogar!
+                    </p>
+                  </div>
+                </>
+              ) : isAdmin ? (
+                <>
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-6 h-6 text-orange-600" />
+                    <p className="text-lg sm:text-xl text-orange-800 font-bold">
+                      Quiz Bloqueado (Acesso Admin Permitido)
+                    </p>
+                  </div>
+                  <p className="text-sm text-orange-700 text-center">
+                    Você pode jogar mesmo com o quiz bloqueado
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3">
+                    <Lock className="w-6 h-6 text-red-600" />
+                    <p className="text-lg sm:text-xl text-red-800 font-bold">
+                      Quiz Temporariamente Bloqueado
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
           
           {/* Barra de progresso visual */}
           <div className="mb-6 sm:mb-8 bg-white rounded-3xl p-6 sm:p-8 shadow-2xl transform hover:scale-105 transition-all duration-300 border-3 border-cyan-200">
@@ -115,11 +171,32 @@ export const WaterQuizWelcome: React.FC<WaterQuizWelcomeProps> = ({ onStart, onV
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center mb-8 sm:mb-12">
           <button
             onClick={onStart}
-            className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-12 sm:px-16 py-6 sm:py-8 rounded-3xl font-black text-xl sm:text-2xl hover:from-cyan-700 hover:to-blue-700 transform hover:scale-115 transition-all duration-300 shadow-3xl flex items-center gap-3 sm:gap-4 animate-pulse hover:animate-none border-4 border-cyan-400 hover:border-cyan-500 w-full sm:w-auto"
+            disabled={!quizEnabled && !isAdmin}
+            className={`px-12 sm:px-16 py-6 sm:py-8 rounded-3xl font-black text-xl sm:text-2xl transform hover:scale-115 transition-all duration-300 shadow-3xl flex items-center gap-3 sm:gap-4 border-4 w-full sm:w-auto ${
+              quizEnabled
+                ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-700 hover:to-blue-700 animate-pulse hover:animate-none border-cyan-400 hover:border-cyan-500'
+                : isAdmin
+                ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 border-orange-400 hover:border-orange-500'
+                : 'bg-gray-400 text-gray-200 cursor-not-allowed border-gray-300'
+            }`}
           >
-            <Play className="w-6 h-6 sm:w-8 sm:h-8 animate-bounce" />
-            <Zap className="w-6 h-6 sm:w-8 sm:h-8 animate-pulse" />
-            🚀 BORA COMEÇAR! 💧
+            {quizEnabled ? (
+              <>
+                <Play className="w-6 h-6 sm:w-8 sm:h-8 animate-bounce" />
+                <Zap className="w-6 h-6 sm:w-8 sm:h-8 animate-pulse" />
+                🚀 BORA COMEÇAR! 💧
+              </>
+            ) : isAdmin ? (
+              <>
+                <Shield className="w-6 h-6 sm:w-8 sm:h-8 animate-pulse" />
+                🛡️ JOGAR (ADMIN) 💧
+              </>
+            ) : (
+              <>
+                <Lock className="w-6 h-6 sm:w-8 sm:h-8" />
+                🔒 QUIZ BLOQUEADO
+              </>
+            )}
           </button>
           
           <button
@@ -129,6 +206,17 @@ export const WaterQuizWelcome: React.FC<WaterQuizWelcomeProps> = ({ onStart, onV
             <Trophy className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
             🏆 Ver Ranking 🥇
           </button>
+
+          {/* Admin Button */}
+          {onAdminAccess && (
+            <button
+              onClick={onAdminAccess}
+              className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-8 sm:px-12 py-4 sm:py-6 rounded-3xl font-bold text-lg sm:text-xl hover:from-red-600 hover:to-orange-600 transition-all duration-300 flex items-center gap-2 sm:gap-3 transform hover:scale-110 shadow-xl w-full sm:w-auto"
+            >
+              <Shield className="w-5 h-5 sm:w-6 sm:h-6" />
+              🛡️ Admin
+            </button>
+          )}
         </div>
 
         {/* Informações sobre o quiz - Cards interativos */}

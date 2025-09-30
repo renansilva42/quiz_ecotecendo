@@ -97,24 +97,64 @@ export const WaterQuizAdmin: React.FC<WaterQuizAdminProps> = ({ onBack }) => {
     try {
       setIsDeleting(true);
       setError(null);
+      setSuccess(null);
 
-      const { error } = await supabase
+      console.log('🗑️ Iniciando exclusão de todos os resultados...');
+
+      // Primeiro, buscar todos os IDs
+      const { data: allResults, error: fetchError } = await supabase
         .from('water_quiz_results')
-        .delete()
-        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all records
+        .select('id');
 
-      if (error) {
-        console.error('Error deleting results:', error);
-        setError('Erro ao excluir resultados');
+      if (fetchError) {
+        console.error('❌ Erro ao buscar resultados:', fetchError);
+        setError(`Erro ao buscar resultados: ${fetchError.message}`);
         return;
       }
 
-      setResults([]);
-      setSuccess('Todos os resultados foram excluídos com sucesso!');
-      setTimeout(() => setSuccess(null), 3000);
+      if (!allResults || allResults.length === 0) {
+        console.log('ℹ️ Nenhum resultado para excluir');
+        setSuccess('Não há resultados para excluir');
+        setTimeout(() => setSuccess(null), 3000);
+        return;
+      }
+
+      console.log(`📊 Encontrados ${allResults.length} resultados para excluir`);
+
+      // Deletar todos os resultados um por um para garantir que o RLS funcione
+      let deletedCount = 0;
+      let failedCount = 0;
+
+      for (const result of allResults) {
+        const { error: deleteError } = await supabase
+          .from('water_quiz_results')
+          .delete()
+          .eq('id', result.id);
+
+        if (deleteError) {
+          console.error(`❌ Erro ao deletar resultado ${result.id}:`, deleteError);
+          failedCount++;
+        } else {
+          deletedCount++;
+        }
+      }
+
+      console.log(`✅ Excluídos: ${deletedCount}, Falhas: ${failedCount}`);
+
+      if (deletedCount > 0) {
+        setResults([]);
+        setSuccess(`${deletedCount} resultado(s) excluído(s) com sucesso!`);
+        setTimeout(() => setSuccess(null), 3000);
+        // Recarregar dados
+        await fetchData();
+      }
+
+      if (failedCount > 0) {
+        setError(`${failedCount} resultado(s) não puderam ser excluídos devido a permissões.`);
+      }
     } catch (err) {
-      console.error('Unexpected error:', err);
-      setError('Erro inesperado ao excluir resultados');
+      console.error('❌ Erro inesperado:', err);
+      setError(`Erro inesperado ao excluir resultados: ${err instanceof Error ? err.message : 'Erro desconhecido'}`);
     } finally {
       setIsDeleting(false);
     }
